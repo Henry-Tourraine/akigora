@@ -29,7 +29,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;m
+    align-items: center;
 }
 
 .aside-title {
@@ -82,6 +82,7 @@ body {
 #page-content {
     width: 100%;
 }
+
 .homepage {
     display: flex;
     flex-direction: column;
@@ -102,12 +103,23 @@ body {
 
 .number-indicator {
     width: 27rem;
-    height: 27rem;
-    margin: 1rem .5rem;
+    height: 30rem;
+    margin: 1rem 1rem;
     border-radius: 1rem;
-    border: 1px solid var(--violet);
 }
 
 .main-svg{
     border-radius: 1rem;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.009)
+}
+
+.graph-layout {
+    display: flex;
+    width: 100%;
+}
+
+.pie-chart {
+    width: 70rem;
+    height: 62rem;
+    margin: 1rem 1rem;
 }
