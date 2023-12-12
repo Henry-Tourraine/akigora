@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 62.5%;
+    --violet: #7D43C8;
+}
+
+body {
+    font-size: 1.8rem;
+    font-family: "Montserrat", sans-serif;
+}
+
+.layout {
+    display: flex;
+}
+
+.aside {
+    width: 25rem;
+    height: 96vh;
+    vertical-align: top;
+    margin: 1rem 2rem 0 1rem;
+    border-radius: 2.5rem;
+    padding: 2rem;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;m
+}
+
+.aside-title {
+    color: rgba(0, 0, 0, 0.50);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Montserrat, sans-serif;
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.25rem;
+    letter-spacing: -0.0125rem;
+    margin: 4rem 0 4rem 0;
+    text-align: center;
+}
+
+.img-aside {
+    width: 18rem;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.tabs {
+    color: #4D4D4D;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Montserrat, sans-serif;
+    font-size: 1.3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.00963rem;
+    margin: 2rem 0;
+    user-select: none;
+    cursor: pointer;
+    padding: 1rem 3.5rem;
+}
+
+.link{
+    text-decoration: none;
+    color: #4D4D4D;
+}
+.tabs:hover {
+    background-color: rgba(125, 67, 200, .1);
+    border-radius: .8rem;
+    transition: all 0.5s;
+}
+
+#page-content {
+    width: 100%;
+}
+.homepage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%
+}
+
+.logo-homepage {
+    width: 45rem;
+    margin-bottom: 8rem;
+}
+
+.img-homepage {
+    margin-left: 10.5rem;
+    width: 50rem;
+}
+
+.number-indicator {
+    width: 27rem;
+    height: 27rem;
+    margin: 1rem .5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--violet);
+}
+
+.main-svg{
+    border-radius: 1rem;
+}
