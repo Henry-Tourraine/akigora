@@ -23,45 +23,13 @@ df = pd.read_csv(
     'gdp-life-exp-2007.csv')
 
 app.layout = (
-    html.Div(className=" layout", children=[
+    html.Div(children=[
         dcc.Location(id='url', refresh=False),
-        html.Aside(
-            className="aside",
-            children=[
-                dcc.Link(
-                    href='/',
-                    className="logo",
-                    children=[
-                        html.Img(
-                            className="img-aside",
-                            src="assets/img/akigora_logo.png",
-                            alt="Logo Akigora"
-                        )]),
-                html.Div(
-                    children=[
-                        html.H1(children="Départements", className="aside-title"),
-                        html.Div(children=[
-                            html.P(className="tabs", children=
-                                dcc.Link('Direction', href='/direction', id="direction-link", className="link")
-                                   ),
-                            html.P(children=dcc.Link('Ressources Humaines', href='/ressources-humaines',
-                                                     id="ressources-humaines-link", className="link"),
-                                   className="tabs"),
-                            html.P(children=dcc.Link('Marketing', href='/marketing', id="marketing-link",
-                                                     className="link"), className="tabs"),
-                            html.P(children=dcc.Link('Commercial', href='/commercial', id="commercial-link",
-                                                     className="link"), className="tabs"),
-                            html.P(children=dcc.Link('Technique', href='/technique', id="technique-link",
-                                                     className="link"), className="tabs")
-                        ])
-                    ])
-            ]
-        ),
-        html.Main(id='page-content')
+        html.Main(id='page-content', className=" layout")
     ]))
 
 
-@app.callback(Output('url', 'pathname'),
+@app.callback(Output(   'url', 'pathname'),
               Input('url', 'pathname'))
 def update_pathname(pathname):
     return pathname
