@@ -2,10 +2,10 @@ import pymongo
 import os
 import pandas as pd
 import json
-from components.dating import Dating
-from components.cleaning import Cleaning
-from components.engineering import Engineering
-from components.ploting import Plotting
+from app.components.dating import Dating
+from app.components.cleaning import Cleaning
+from app.components.engineering import Engineering
+from app.components.ploting import Plotting
 
 class MurielleController:
   def __init__(self):
