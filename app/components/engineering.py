@@ -43,6 +43,9 @@ class Operations:
     def unique(df, colonne):
         return df[colonne].unique()
 
+    def value_counts(df, colonne, result=None):
+        return df[colonne].value_counts()
+
     def div(df, colonne, result=None, value=None):
         value_to_use = value if value is not None else 'pas de value'
         return result / value_to_use if result is not None else 'pas de result'
@@ -77,6 +80,7 @@ class Operations:
         "moyenne": moyenne,
         "contient": contient,
         "unique": unique,
+        "value_counts": value_counts,
         "div": div,
         "add": add,
         "mul" : mul,
