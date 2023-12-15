@@ -2,6 +2,7 @@ from math import isnan
 import pandas as pd
 import unidecode as ud
 import numpy as np
+import re
 
 
 class Cleaning:
@@ -44,6 +45,34 @@ class Cleaning:
         pass
 
     def process(self, df):
+        #move columns and definitions in one single dict
+        cleans = [{"name": "liste_date", "columns": ['createdAt'], "function": self.nettoyage_date},
+        {"name": "liste_villes", "columns": ['company.address'], "function": self.nettoyage_villes},
+          {"name": "liste_horaires", "columns": ['hours_planned'], "function": self.nettoyage_horaires},
+          {"name": "liste_timestamp", "columns": ['createdAt'], "function": self.nettoyage_timestamp},
+          {"name": "liste_nan_numeriques","columns":  ['hours_planned', 'daily_hourly.daily_prices',"daily_hourly_prices.daily_price_max",'percentage','note_communication','note_quality','note_level'], "function": lambda x: x.fillna(self.defaut_negatif_float, inplace=True)},
+          {"name": "liste_nan_str", "columns": ['companyOrSchool', 'company.address', 'experienceTime','studyLevel', 'company.type','done','visible','isFake','temporarilyInvisible','sector'] , "function": lambda x: x.fillna(self.defaut_string, inplace=True)},
+        ]
+        #use regex to match columns because of columns aliasing in pd.merge...
+        for clean in cleans:
+            for colonne in clean["columns"]:
+                a = re.compile(f"{colonne}")
+                matches = list(filter(a.match, df.columns))
+                for match_ in matches:
+                    df[match_] = df[colonne].apply(clean["function"])
+
+        a = re.compile(f"{self.colonne_age_categories}")
+        matches = list(filter(a.match, df.columns))
+        for match_ in matches:
+            df[match_] = self.get_age_categories(df, match_)
+
+
+        a = re.compile(f"{self.colonne_study_categories}")
+        matches = list(filter(a.match, df.columns))
+        for match_ in matches:
+            df[match_] = self.get_age_categories(df, match_)
+
+        """
         # changement de format de date
         for colonne in self.liste_date:
             if colonne in df.columns:
@@ -80,7 +109,7 @@ class Cleaning:
         # fillna Inconnu
         for colonne in self.liste_nan_str:
             if colonne in df.columns:
-                df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)
+                df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
 
         return df
            
