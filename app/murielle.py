@@ -14,7 +14,7 @@ class MurielleController:
     self.config_file = pd.read_csv(os.environ["configFile"])
     self.data = Dating(db=myclient[os.environ["DB"]])
     self.cleaning = Cleaning()
-    self.engineering = Engineering()
+    self.engineering = Engineering
     self.ploting = Plotting()
 
   def get_departments(self):
