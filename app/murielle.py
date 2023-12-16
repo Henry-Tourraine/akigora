@@ -13,7 +13,7 @@ class MurielleController:
     myclient.drop_database(os.environ["DB"])
     self.db = myclient[os.environ["DB"]]
     self.config_file = pd.read_csv(os.environ["configFile"])
-    self.data = Dating()
+    self.data = Dating(self.db)
     self.cleaning = Cleaning()
     self.engineering = Engineering()
     self.ploting = Plotting()
