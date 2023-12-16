@@ -138,7 +138,7 @@ class Cleaning:
         #df[colonne].str.replace("\d{2}\/d{2}\/d{4}", r'\1', regex=True)
         def remove_n(df):
           if len(df[colonne]) < 3:
-              df[colonne] = pd.Timestamp.max
+              df[colonne] = "01/12/2260"
               return df
           temp = df[colonne].split("/")
           print(df)
