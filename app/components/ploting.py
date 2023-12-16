@@ -38,4 +38,4 @@ class Plotting:
             else:
                 return "check n'est pas valide"
         except Exception as e:
-            return None, "an  error ocurred in Ploting process"
+            return None, f"an  error ocurred in Ploting process {e}"
