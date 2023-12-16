@@ -89,6 +89,9 @@ class Operations:
       elif operation == "max":
         temp = buffer.group_by(joinColumns, as_index=False)[columns].max()
         return temp[joinColumns], temp[columns]
+      elif operation == "count":
+        temp = buffer.group_by(joinColumns, as_index=False)[columns].count()
+        return temp[joinColumns], temp[columns]
       else:
          return np.NaN, np.NaN
 
