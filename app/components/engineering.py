@@ -90,7 +90,7 @@ class Operations:
         temp = buffer.group_by(joinColumns, as_index=False)[columns].max()
         return temp[joinColumns], temp[columns]
       else:
-         return np.Nan, np.Nan
+         return np.NaN, np.NaN
 
     operations = {
         "longueur": longueur,
