@@ -91,8 +91,6 @@ class Operations:
         return temp[joinColumns], temp[columns]
       elif operation == "count":
         temp = df.groupby(joinColumns, as_index=False)[columns].count()
-        print("engineering goupby count")
-        print(temp)
         return temp[joinColumns], temp[columns]
       else:
          return np.NaN, np.NaN
