@@ -29,14 +29,14 @@ class MurielleController:
       data = json.loads(indicator_row["data"])
       #DATA PASS
       (df, err) = self.data.process(data)
-      if err is None:
+      if err is not None:
         return None, "Failed at data"
 
       #CLEANING PASS
       if self.cleaning is not None:
         #cleaning = json.loads(indicator_row["cleaning"])
         (df, err) = self.cleaning.process(df)
-        if err is None:
+        if err is not None:
           return None, "Failed at cleaning"
 
       #ENGINEERING PASS
@@ -45,14 +45,14 @@ class MurielleController:
         engineering = json.loads(indicator_row["engineering"])
         (df, df_cleaning, filters) = self.engineering.process(engineering, df)
 
-      if err is None:
+      if err is not None:
         return None, "Failed at engineering"
 
       #PLOTING
       if self.ploting is not None:
         ploting = json.loads(indicator_row["plotting"])
         (plot, err) = self.ploting.process(ploting, df)
-        if err is None:
+        if err is not None:
           return None, "Failed at ploting"
         results.append({"department": indicator_row["department"],"indicatorName": indicator_row["name"], "plot":  plot, "df_cleaned": df_cleaning, "ploting": ploting, "engineering": engineering})
     return results
