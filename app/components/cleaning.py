@@ -141,7 +141,6 @@ class Cleaning:
               df[colonne] = "01/12/2260"
               return df
           temp = df[colonne].split("/")
-          print(df)
           df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
           return df
         df.apply(remove_n, axis=1)
