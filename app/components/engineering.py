@@ -78,15 +78,19 @@ class Operations:
     def group_by(buffer, joinColumns, columns, operation):
       columns = [i["name"] for i in columns]
       if operation == "sum":
-         return buffer.group_by(joinColumns)[*columns].sum()
+         temp = buffer.group_by(joinColumns, as_index=False)[columns].sum()
+         return temp[joinColumns], temp[columns]
       elif operation == "mean":
-         return buffer.group_by(joinColumns)[*columns].mean()
+        temp = buffer.group_by(joinColumns, as_index=False)[columns].mean()
+        return temp[joinColumns], temp[columns]
       elif operation == "min":
-         return buffer.group_by(joinColumns)[*columns].min()
+        temp = buffer.group_by(joinColumns, as_index=False)[columns].min()
+        return temp[joinColumns], temp[columns]
       elif operation == "max":
-         return buffer.group_by(joinColumns)[*columns].max()
+        temp = buffer.group_by(joinColumns, as_index=False)[columns].max()
+        return temp[joinColumns], temp[columns]
       else:
-         return np.Nan
+         return np.Nan, np.Nan
 
     operations = {
         "longueur": longueur,
@@ -178,7 +182,8 @@ class Engineering:
             # handling for group_by
             elif operation['fonction'] == 'group_by':
                 result = Operations.group_by(buffer, operation.get("joinColumns"), colonnes, operation.get("aggfunc"))
-                buffer.append(result)
+                buffer.append(result[0])
+                buffer.append(result[1])
 
             else:
                 result = Operations.operations[operation['fonction']](df, colonnes, result=result)
