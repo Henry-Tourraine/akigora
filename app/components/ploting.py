@@ -31,7 +31,7 @@ class Plotting:
                         print("ploting")
                         print(data[-2])
                         print(data[-1])
-                        fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
+                        fig = go.Figure(data=[go.Bar(x=data[-2][:10], y=data[-1][:10], **plot_options)])
                     else:
                         print(f"Type de plot non supporté: {type_plot}")
 
