@@ -3,7 +3,7 @@ import pandas as pd
 
 
 class Dating:
-  def __init__(self, db):
+  def __init__(self, db=None):
     self.db = db
 
   def __check(self):
