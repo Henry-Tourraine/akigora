@@ -16,7 +16,10 @@ class Dating:
         keys = list(set(["_id", *dict_descriptor["data"].keys()]))
         if "rightKey" in dict_descriptor:
           keys.append(dict_descriptor["rightKey"])
-        return pd.DataFrame(temp.find())[keys], None
+          new_df = pd.DataFrame(temp.find())[keys]
+        for f in [f for f in dict_descriptor["data"].keys() if dict_descriptor["data"][f] is not None]:
+          new_df = new_df[new_df[f] == dict_descriptor["data"][f]]
+        return new_df, None
       return pd.DataFrame(temp.find()), None
     else:
       return None, "descriptor has no collection name"

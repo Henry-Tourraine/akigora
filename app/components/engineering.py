@@ -74,6 +74,19 @@ class Operations:
     def mul_buffer(buffer=[], value=None):
         value_to_use = value if value is not None else "pas de value"
         return buffer[-1] * value_to_use if buffer is not None else "not enough in buffer"
+    
+    def group_by(buffer, joinColumns, columns, operation):
+      columns = [i["name"] for i in columns]
+      if operation == "sum":
+         return buffer.group_by(joinColumns)[*columns].sum()
+      elif operation == "mean":
+         return buffer.group_by(joinColumns)[*columns].mean()
+      elif operation == "min":
+         return buffer.group_by(joinColumns)[*columns].min()
+      elif operation == "max":
+         return buffer.group_by(joinColumns)[*columns].max()
+      else:
+         return np.Nan
 
     operations = {
         "longueur": longueur,
@@ -87,7 +100,8 @@ class Operations:
         "mul" : mul,
         "div_buffer" : div_buffer,
         "mul_buffer" : mul_buffer,
-        "moyenne_buffer": moyenne_buffer
+        "moyenne_buffer": moyenne_buffer,
+        "group_by": group_by
     }
 
 
@@ -108,8 +122,9 @@ class Engineering:
         if not all(c['name'] in df.columns for c in engineer_description):
             return None, "One or more specified columns do not exist in the DataFrame"
         return True
+    
 # process va venir effectuer les calcul et faire autant de tour nécessaire si plusieurs calculs à faire
-    def process(engineer_descriptions, df, filters=[]):
+    def process(df, engineer_descriptions, filters=[]):#filters for interactivity
         df_cleaning = df.copy()
         df = Engineering.apply_filter(df, filters)
         buffer = []
@@ -117,10 +132,33 @@ class Engineering:
             operation = description["operation"]
             colonnes = description["colonnes"]
 
-            # On va boucler sur le nombre d'opérations présentes dans chaque description
+            #On va boucler sur le nombre d'opérations présentes dans chaque description
             result = None
 
             print(operation['fonction'])
+            #work on buffer
+            if len(colonnes) > 0 and colonnes[0]["name"] == "result":
+              # handling for div_buffer
+              if operation['fonction'] == 'div':
+                  print(f' buffer lenght :{len(buffer)}')
+                  result = Operations.div_buffer(buffer=buffer, value=operation.get('value'))
+                  print(f"print 1: {result}")
+                  buffer.append(result)
+                  print(f"print 2: {buffer}")
+
+              elif operation['fonction'] == 'moyenne':
+                  print(f' buffer lenght :{len(buffer)}')
+                  result = Operations.moyenne_buffer(buffer=buffer)
+                  print(f"print 1: {result}")
+                  buffer.append(result)
+                  print(f"print 2: {buffer}")
+
+              # handling for mul_buffer
+              elif operation['fonction'] == 'mul':
+                  print(f' buffer lenght :{len(buffer)}')
+                  result = Operations.mul_buffer(buffer=buffer, value=operation.get('value'))
+                  buffer.append(result)
+
 
             # penser a implementer la logique de contient
             if operation['fonction'] == 'contient':
@@ -137,26 +175,9 @@ class Engineering:
                 print(f"print 1: {result}")
                 buffer.append(result)
                 print(f"print 2: {buffer}")
-
-                # handling for div_buffer
-            elif operation['fonction'] == 'div_buffer':
-                print(f' buffer lenght :{len(buffer)}')
-                result = Operations.div_buffer(buffer=buffer, value=operation.get('value'))
-                print(f"print 1: {result}")
-                buffer.append(result)
-                print(f"print 2: {buffer}")
-
-            elif operation['fonction'] == 'moyenne_buffer':
-                print(f' buffer lenght :{len(buffer)}')
-                result = Operations.moyenne_buffer(buffer=buffer)
-                print(f"print 1: {result}")
-                buffer.append(result)
-                print(f"print 2: {buffer}")
-
-            # handling for mul_buffer
-            elif operation['fonction'] == 'mul_buffer':
-                print(f' buffer lenght :{len(buffer)}')
-                result = Operations.mul_buffer(buffer=buffer, value=operation.get('value'))
+            # handling for group_by
+            elif operation['fonction'] == 'group_by':
+                result = Operations.group_by(buffer, operation.get("joinColumns"), colonnes, operation.get("aggfunc"))
                 buffer.append(result)
 
             else:
