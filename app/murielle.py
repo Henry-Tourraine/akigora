@@ -31,7 +31,7 @@ class MurielleController:
       (df, err) = self.data.process(data)
       if err is None:
         return None, "Failed at data"
-
+      print(df)
       #CLEANING PASS
       if self.cleaning is not None:
         #cleaning = json.loads(indicator_row["cleaning"])
