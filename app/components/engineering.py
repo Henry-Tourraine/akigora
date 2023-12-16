@@ -108,11 +108,10 @@ class Engineering:
             return None, "One or more specified columns do not exist in the DataFrame"
         return True
 # process va venir effectuer les calcul et faire autant de tour nécessaire si plusieurs calculs à faire
-    def process(df, engineer_descriptions, filters=[]):
+    def process(engineer_descriptions, df, filters=[]):
         df_cleaning = df.copy()
         df = Engineering.apply_filter(df, filters)
         buffer = []
-        print(type(engineer_descriptions))
         for description in engineer_descriptions:
             operation = description["operation"]
             colonnes = description["colonnes"]
