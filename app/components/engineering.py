@@ -75,22 +75,22 @@ class Operations:
         value_to_use = value if value is not None else "pas de value"
         return buffer[-1] * value_to_use if buffer is not None else "not enough in buffer"
     
-    def group_by(buffer, joinColumns, columns, operation):
+    def group_by(df, joinColumns, columns, operation):
       columns = [i["name"] for i in columns]
       if operation == "sum":
-         temp = buffer.group_by(joinColumns, as_index=False)[columns].sum()
+         temp = df.group_by(joinColumns, as_index=False)[columns].sum()
          return temp[joinColumns], temp[columns]
       elif operation == "mean":
-        temp = buffer.group_by(joinColumns, as_index=False)[columns].mean()
+        temp = df.group_by(joinColumns, as_index=False)[columns].mean()
         return temp[joinColumns], temp[columns]
       elif operation == "min":
-        temp = buffer.group_by(joinColumns, as_index=False)[columns].min()
+        temp = df.group_by(joinColumns, as_index=False)[columns].min()
         return temp[joinColumns], temp[columns]
       elif operation == "max":
-        temp = buffer.group_by(joinColumns, as_index=False)[columns].max()
+        temp = df.group_by(joinColumns, as_index=False)[columns].max()
         return temp[joinColumns], temp[columns]
       elif operation == "count":
-        temp = buffer.group_by(joinColumns, as_index=False)[columns].count()
+        temp = df.group_by(joinColumns, as_index=False)[columns].count()
         return temp[joinColumns], temp[columns]
       else:
          return np.NaN, np.NaN
@@ -184,7 +184,7 @@ class Engineering:
                 print(f"print 2: {buffer}")
             # handling for group_by
             elif operation['fonction'] == 'group_by':
-                result = Operations.group_by(buffer, operation.get("joinColumns"), colonnes, operation.get("aggfunc"))
+                result = Operations.group_by(df, operation.get("joinColumns"), colonnes, operation.get("aggfunc"))
                 buffer.append(result[0])
                 buffer.append(result[1])
 
