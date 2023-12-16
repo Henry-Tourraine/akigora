@@ -138,6 +138,7 @@ class Cleaning:
         #df[colonne].str.replace("\d{2}\/d{2}\/d{4}", r'\1', regex=True)
         def remove_n(df):
           temp = df[colonne].split("/")
+          print(temp)
           df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
           return df
         df.apply(remove_n, axis=1)
