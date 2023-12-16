@@ -18,7 +18,7 @@ class MurielleController:
     self.engineering = Engineering()
     self.ploting = Plotting()
 
-  def get_department(self):
+  def get_departments(self):
     return self.config_file["department"].unique()
 
   def get_all_indicators_by_department(self, department_name):
