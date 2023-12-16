@@ -10,7 +10,6 @@ from app.components.ploting import Plotting
 class MurielleController:
   def __init__(self):
     myclient = pymongo.MongoClient(os.environ["MONGODB"])
-    myclient.drop_database(os.environ["DB"])
     self.db = myclient[os.environ["DB"]]
     self.config_file = pd.read_csv(os.environ["configFile"])
     self.data = Dating(db=myclient[os.environ["DB"]])
