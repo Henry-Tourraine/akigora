@@ -44,8 +44,8 @@ class Operations:
         return df[colonne].unique()
 
     def value_counts(df, colonne, result=None):
-        print(f"value count {colonne}")
-        return df[colonne].value_counts()
+        print(f"value count {colonne[0]['name']}")
+        return df[colonne[0]["name"]].value_counts()
 
     def div(df, colonne, result=None, value=None):
         value_to_use = value if value is not None else 'pas de value'
