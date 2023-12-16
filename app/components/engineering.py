@@ -112,6 +112,7 @@ class Engineering:
         df_cleaning = df.copy()
         df = Engineering.apply_filter(df, filters)
         buffer = []
+        print(type(engineer_descriptions))
         for description in engineer_descriptions:
             operation = description["operation"]
             colonnes = description["colonnes"]
