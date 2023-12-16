@@ -11,10 +11,8 @@ class Dating:
 
   def process_dict(self, dict_descriptor):
     if "collection" in dict_descriptor:
-      print(dict_descriptor["collection"])
       temp = self.db[dict_descriptor["collection"]]
       if "data" in dict_descriptor:
-        print(pd.DataFrame(temp.find()).columns)
         keys = list(set(["_id", *dict_descriptor["data"].keys()]))
         if "rightKey" in dict_descriptor:
           keys.append(dict_descriptor["rightKey"])
@@ -35,7 +33,6 @@ class Dating:
       if "key" in desc:
         temp = pd.merge(temp, join, on=[desc["key"]], how="left")
       elif "leftKey" in desc and "rightKey" in desc:
-        print(join.columns)
         temp = pd.merge(temp, join, left_on=[desc["leftKey"]], right_on=[desc["rightKey"]], how="left")
       else:
         return None, "No key"
