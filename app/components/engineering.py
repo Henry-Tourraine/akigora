@@ -184,7 +184,7 @@ class Engineering:
                 print(f"print 2: {buffer}")
             # handling for group_by
             elif operation['fonction'] == 'group_by':
-                result = Operations.group_by(df, operation.get("joinColumns"), colonnes, operation.get("aggfunc"))
+                result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
                 buffer.append(result[0])
                 buffer.append(result[1])
 

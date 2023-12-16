@@ -64,10 +64,11 @@ class MurielleController:
     df = resfresh_dict["df_cleaned"]
     engineering_description = resfresh_dict["engineering"]
     ploting_description = resfresh_dict["ploting"]
-    (df, err) = self.engineering.process(df, engineering_description, ploting_description["filters"])
+
+    (df, err) = self.engineering.process(engineering_description, df, ploting_description["filters"])
     if err is not None:
       return None, "engineering failed"
-    (plot, err) = self.ploting.process(df, ploting_description)
+    (plot, err) = self.ploting.process(ploting_description, df)
     if err is not None:
       return None, "ploting failed"
     resfresh_dict["plot"] = plot
