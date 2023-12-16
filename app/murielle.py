@@ -19,7 +19,7 @@ class MurielleController:
     self.ploting = Plotting()
 
   def get_department(self):
-    return self.config_file["departement"].unique()
+    return self.config_file["department"].unique()
 
   def get_all_indicators_by_department(self, department_name):
     indicators_to_process = self.config_file.loc[self.config_file["department"] == department_name]
