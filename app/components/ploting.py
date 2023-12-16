@@ -15,11 +15,11 @@ class Plotting:
 
 # on éxécute le plot en fonction du type de plot
             if type_plot == "pie":
-                fig = go.Figure(data=[go.Pie(labels=data, values=data, **plot_options)])
+                fig = go.Figure(data=[go.Pie(labels=data, values=data[-1], **plot_options)])
             elif type_plot == "indicator":
-                fig = go.Figure(go.Indicator(mode="number+delta", value=data, **plot_options))
+                fig = go.Figure(go.Indicator(mode="number+delta", value=data[-1], **plot_options))
             elif type_plot == "gauge":
-                fig = go.Figure(go.Indicator(mode="gauge+number+delta", value=data, **plot_options))
+                fig = go.Figure(go.Indicator(mode="gauge+number+delta", value=data[-1], **plot_options))
             elif type_plot == "hist":
                 print(len(data))
                 fig = go.Figure(data=[go.Histogram(x=data[-1], **plot_options)])
