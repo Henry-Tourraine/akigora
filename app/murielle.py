@@ -38,7 +38,8 @@ class MurielleController:
         (df, err) = self.cleaning.process(df)
         if err is not None:
           return None, "Failed at cleaning"
-
+      print(type(df))
+      print(df)
       #ENGINEERING PASS
       #CHECK IF REFRESH IS NEEEDED
       if self.engineering is not None:
