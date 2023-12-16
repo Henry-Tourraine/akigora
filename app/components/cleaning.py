@@ -56,70 +56,67 @@ class Cleaning:
         ]
 
         #use regex to match columns because of columns aliasing in pd.merge...
-        try:
-            for clean in cleans:
-                for colonne in clean["columns"]:
-                    a = re.compile(f"{colonne}")
-                    matches = list(filter(a.match, df.columns))
-                    for match_ in matches:
-                        df = clean["function"](df, match_)
-                    if df is None:
-                        break
-                        #df[match_] = df[colonne].apply(clean["function"])
-
-            a = re.compile(f"{self.colonne_age_categories}")
-            matches = list(filter(a.match, df.columns))
-            for match_ in matches:
-                df[match_] = self.get_age_categories(df, match_)
-
-
-            a = re.compile(f"{self.colonne_study_categories}")
-            matches = list(filter(a.match, df.columns))
-            for match_ in matches:
-                df[match_] = self.get_study_levels(df, match_)
-
-            """
-            # changement de format de date
-            for colonne in self.liste_date:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].apply(self.nettoyage_date)
-
-            # nettoyage ville
-            for colonne in self.liste_villes:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].apply(self.nettoyage_villes)
-
-            # nettoyage horaires
-            for colonne in self.liste_horaires:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].apply(self.nettoyage_horaires)
-
-            # nettoyage timestamp
-            for colonne in self.liste_timestamp:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].apply(self.nettoyage_timestamp)
-
-            # nettoyage catégorie d'age
-            if self.colonne_age_categories in df.columns:
-                self.get_age_categories(df, self.colonne_age_categories)
-
-            # nettoyage study levels
-            if self.colonne_study_categories in df.columns:
-                self.get_study_levels(df, self.colonne_study_categories)
-
-            # fillna numériques
-            for colonne in self.liste_nan_numeriques:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].fillna(self.defaut_negatif_float, inplace=True)
-
-            # fillna Inconnu
-            for colonne in self.liste_nan_str:
-                if colonne in df.columns:
-                    df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
-            return df, None
         
-        except Exception as e:
-            return None, e
+        for clean in cleans:
+            for colonne in clean["columns"]:
+                a = re.compile(f"{colonne}")
+                matches = list(filter(a.match, df.columns))
+                for match_ in matches:
+                    df = clean["function"](df, match_)
+                if df is None:
+                    break
+                    #df[match_] = df[colonne].apply(clean["function"])
+
+        a = re.compile(f"{self.colonne_age_categories}")
+        matches = list(filter(a.match, df.columns))
+        for match_ in matches:
+            df[match_] = self.get_age_categories(df, match_)
+
+
+        a = re.compile(f"{self.colonne_study_categories}")
+        matches = list(filter(a.match, df.columns))
+        for match_ in matches:
+            df[match_] = self.get_study_levels(df, match_)
+
+        """
+        # changement de format de date
+        for colonne in self.liste_date:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].apply(self.nettoyage_date)
+
+        # nettoyage ville
+        for colonne in self.liste_villes:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].apply(self.nettoyage_villes)
+
+        # nettoyage horaires
+        for colonne in self.liste_horaires:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].apply(self.nettoyage_horaires)
+
+        # nettoyage timestamp
+        for colonne in self.liste_timestamp:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].apply(self.nettoyage_timestamp)
+
+        # nettoyage catégorie d'age
+        if self.colonne_age_categories in df.columns:
+            self.get_age_categories(df, self.colonne_age_categories)
+
+        # nettoyage study levels
+        if self.colonne_study_categories in df.columns:
+            self.get_study_levels(df, self.colonne_study_categories)
+
+        # fillna numériques
+        for colonne in self.liste_nan_numeriques:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].fillna(self.defaut_negatif_float, inplace=True)
+
+        # fillna Inconnu
+        for colonne in self.liste_nan_str:
+            if colonne in df.columns:
+                df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
+        return df, None
 
 
     def fill_nan_num(self, df, colonne):
