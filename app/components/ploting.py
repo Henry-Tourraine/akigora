@@ -3,10 +3,10 @@ import plotly.graph_objects as go
 
 class Plotting:
   # check verifie que la data existe bien sinon on print un message d'erreur
-    def check(result, graph_description):
+    def check(self, result, graph_description):
         return result if result is not None else "result pas valide"
  # process crée le plot si check est valide
-    def process(graph_description, result):
+    def process(self, graph_description, result):
       if Plotting.check:
         for indicateur, cle in graph_description.items():
             data = result
