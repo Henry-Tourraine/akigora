@@ -51,9 +51,10 @@ class Cleaning:
         {"name": "liste_villes", "columns": ['company.address'], "function": self.nettoyage_villes},
           {"name": "liste_horaires", "columns": ['hours_planned'], "function": self.nettoyage_horaires},
           {"name": "liste_timestamp", "columns": ['createdAt'], "function": self.nettoyage_timestamp},
-          {"name": "liste_nan_numeriques","columns":  ['hours_planned', 'daily_hourly.daily_prices',"daily_hourly_prices.daily_price_max",'percentage','note_communication','note_quality','note_level'], "function": lambda x: x.fillna(self.defaut_negatif_float, inplace=True)},
-          {"name": "liste_nan_str", "columns": ['companyOrSchool', 'company.address', 'experienceTime','studyLevel', 'company.type','done','visible','isFake','temporarilyInvisible','sector'] , "function": lambda x: x.fillna(self.defaut_string, inplace=True)},
+          {"name": "liste_nan_numeriques","columns":  ['hours_planned', 'daily_hourly.daily_prices',"daily_hourly_prices.daily_price_max",'percentage','note_communication','note_quality','note_level'], "function": self.fill_nan_num},
+          {"name": "liste_nan_str", "columns": ['companyOrSchool', 'company.address', 'experienceTime','studyLevel', 'company.type','done','visible','isFake','temporarilyInvisible','sector'] , "function": self.fill_nan_str},
         ]
+
         #use regex to match columns because of columns aliasing in pd.merge...
         for clean in cleans:
             for colonne in clean["columns"]:
@@ -61,6 +62,9 @@ class Cleaning:
                 matches = list(filter(a.match, df.columns))
                 for match_ in matches:
                     df = clean["function"](df, match_)
+                if df is None:
+                  print(clean["name"])
+                  break
                     #df[match_] = df[colonne].apply(clean["function"])
 
         a = re.compile(f"{self.colonne_age_categories}")
@@ -114,7 +118,15 @@ class Cleaning:
                 df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
 
         return df
-           
+
+    def fill_nan_num(self, df, colonne):
+          df[colonne].fillna(self.defaut_negatif_float, inplace=True)
+          return df
+
+    def fill_nan_str(self, df, colonne):
+      df[colonne].fillna(self.defaut_string, inplace=True)
+      return df    
+
     def create_flag(self, df, colonne):
         nom = f"dummy_value_{colonne}"
         df[nom] = df[colonne].apply(pd.isna)
@@ -123,6 +135,12 @@ class Cleaning:
 
     def nettoyage_date(self, df, colonne):
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
+        #df[colonne].str.replace("\d{2}\/d{2}\/d{4}", r'\1', regex=True)
+        def remove_n(df):
+          temp = df[colonne].split("/")
+          df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
+          return df
+        df.apply(remove_n, axis=1)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
         return df
        
