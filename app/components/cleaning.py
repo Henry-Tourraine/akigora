@@ -1,6 +1,7 @@
 from math import isnan
 import pandas as pd
-import unidecode as ud
+#all characters are unidcode in python3
+#import unidecode as ud
 import numpy as np
 import re
 
@@ -197,25 +198,26 @@ class Cleaning:
             elif len(items_adress) == 1 and items_adress[0] != "":
                 if len(items_adress[0].split(" ")) <= 2:
                     town = items_adress[0]
-                    output_adress = self.name_town_perfectly(ud.unidecode(town.strip(", ").upper()))
+                    #output_adress = self.name_town_perfectly(town.strip(", ").upper()))
+                    output_adress = self.name_town_perfectly(town.strip(", ").upper())
                 else:
                     town = items_adress[0].split(" ")[-1]
-                    output_adress = self.name_town_perfectly(ud.unidecode(town.strip(", ").upper()))
+                    output_adress = self.name_town_perfectly(town.strip(", ").upper())
             # virgules présentes et adresse finit par 'France'
             elif items_adress[-1].strip(", ").upper() == "FRANCE":
                 adress = items_adress[-2]
                 if len(adress.strip(" ").split(" ")) == 2: 
                     if adress.strip(" ").split(" ")[0].isnumeric():
-                        output_adress = self.name_town_perfectly(ud.unidecode(adress.strip(" ").split(" ")[1].upper()))
+                        output_adress = self.name_town_perfectly(adress.strip(" ").split(" ")[1].upper())
                     else:
-                        output_adress = self.name_town_perfectly(ud.unidecode(adress.strip(", ").upper()))
+                        output_adress = self.name_town_perfectly(adress.strip(", ").upper())
                 if len(adress.split(" ")) > 2:
-                    output_adress = self.name_town_perfectly(ud.unidecode(adress.split(" ")[-1].strip(", ").upper()))
+                    output_adress = self.name_town_perfectly(adress.split(" ")[-1].strip(", ").upper())
                 else:
-                    output_adress = self.name_town_perfectly(ud.unidecode(adress.strip(", ").upper()))
+                    output_adress = self.name_town_perfectly(adress.strip(", ").upper())
             # virgules présentes mais pas de 'France'
             else:
-                output_adress = self.name_town_perfectly(ud.unidecode(items_adress[-1].split(" ")[-1].upper())) 
+                output_adress = self.name_town_perfectly(items_adress[-1].split(" ")[-1].upper())
         return output_adress
     
     def name_town_perfectly(self, town_upper):
