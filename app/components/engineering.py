@@ -78,19 +78,19 @@ class Operations:
     def group_by(df, joinColumns, columns, operation):
       columns = [i["name"] for i in columns]
       if operation == "sum":
-         temp = df.group_by(joinColumns, as_index=False)[columns].sum()
+         temp = df.groupby(joinColumns, as_index=False)[columns].sum()
          return temp[joinColumns], temp[columns]
       elif operation == "mean":
-        temp = df.group_by(joinColumns, as_index=False)[columns].mean()
+        temp = df.groupby(joinColumns, as_index=False)[columns].mean()
         return temp[joinColumns], temp[columns]
       elif operation == "min":
-        temp = df.group_by(joinColumns, as_index=False)[columns].min()
+        temp = df.groupby(joinColumns, as_index=False)[columns].min()
         return temp[joinColumns], temp[columns]
       elif operation == "max":
-        temp = df.group_by(joinColumns, as_index=False)[columns].max()
+        temp = df.groupby(joinColumns, as_index=False)[columns].max()
         return temp[joinColumns], temp[columns]
       elif operation == "count":
-        temp = df.group_by(joinColumns, as_index=False)[columns].count()
+        temp = df.groupby(joinColumns, as_index=False)[columns].count()
         return temp[joinColumns], temp[columns]
       else:
          return np.NaN, np.NaN
