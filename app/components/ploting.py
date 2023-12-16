@@ -16,7 +16,8 @@ class Plotting:
 
         # on éxécute le plot en fonction du type de plot
                     if type_plot == "pie":
-                        fig = go.Figure(data=[go.Pie(labels=data, values=data[-1], **plot_options)])
+                        #data[-1] must be the result of pd.values_counts
+                        fig = go.Figure(data=[go.Pie(labels=data[-1].index, values=data[-1].values, **plot_options)])
                     elif type_plot == "indicator":
                         fig = go.Figure(go.Indicator(mode="number+delta", value=data[-1], **plot_options))
                     elif type_plot == "gauge":
