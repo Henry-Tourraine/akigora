@@ -60,7 +60,8 @@ class Cleaning:
                 a = re.compile(f"{colonne}")
                 matches = list(filter(a.match, df.columns))
                 for match_ in matches:
-                    df[match_] = df[colonne].apply(clean["function"])
+                    df = clean["function"](df, match_)
+                    #df[match_] = df[colonne].apply(clean["function"])
 
         a = re.compile(f"{self.colonne_age_categories}")
         matches = list(filter(a.match, df.columns))
@@ -71,7 +72,7 @@ class Cleaning:
         a = re.compile(f"{self.colonne_study_categories}")
         matches = list(filter(a.match, df.columns))
         for match_ in matches:
-            df[match_] = self.get_age_categories(df, match_)
+            df[match_] = self.get_study_levels(df, match_)
 
         """
         # changement de format de date
@@ -119,14 +120,17 @@ class Cleaning:
         df[nom] = df[colonne].apply(pd.isna)
         return df
 
+
     def nettoyage_date(self, df, colonne):
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
         return df
+       
 
     def nettoyage_timestamp(self, df, colonne):
         df[colonne] = pd.to_datetime(df[colonne])
         return df
+        
 
     def get_age_categories(self, df, colonne):
         df[colonne].replace(to_replace='mois de 10 ans', value='moins de 10 ans', inplace=True)
@@ -177,6 +181,7 @@ class Cleaning:
     def nettoyage_villes(self, df, colonne):
         df[colonne].apply(self.get_town)
         return df
+   
 
     def get_region(self, town):    
         '''This function takes a town name with accents and quotes. Output is the french region where this town is (ex: Nouvelle Aquitaine)'''
