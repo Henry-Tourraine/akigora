@@ -18,7 +18,8 @@ class Dating:
           keys.append(dict_descriptor["rightKey"])
         new_df = pd.DataFrame(temp.find())[keys]
         for f in [f for f in dict_descriptor["data"].keys() if dict_descriptor["data"][f] is not None]:
-          new_df = new_df[new_df[f] == dict_descriptor["data"][f]]
+          print(f"{f == dict_descriptor['data'][f]}")
+          new_df = new_df.loc[new_df[f] == dict_descriptor["data"][f]]
         return new_df, None
       return pd.DataFrame(temp.find()), None
     else:
