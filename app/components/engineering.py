@@ -128,9 +128,7 @@ class Engineering:
         return True
     
 # process va venir effectuer les calcul et faire autant de tour nécessaire si plusieurs calculs à faire
-    def process(df, engineer_descriptions, filters=[]):#filters for interactivity
-        print(f"engineer process {type(df)}")
-        print(df)
+    def process(engineer_descriptions, df, filters=[]):#filters for interactivity
         df_cleaning = df.copy()
         df = Engineering.apply_filter(df, filters)
         buffer = []
