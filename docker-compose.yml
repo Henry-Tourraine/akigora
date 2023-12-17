@@ -10,6 +10,8 @@ services:
       - volume:/var/volume
     environment:
       - CONFIG="/var/volume/config.csv"
+      - DB="mydatabase"
+      - MONGODB="mongodb://user:example@mongo"
 
   mongo:
     image: mongo
