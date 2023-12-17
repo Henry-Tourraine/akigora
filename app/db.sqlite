@@ -1,0 +1,19 @@
+CREATE TABLE `Users` (
+  `id` int PRIMARY KEY,
+  `username` varchar(255),
+  `password` varchar(255)
+);
+
+CREATE TABLE `Links` (
+  `user_id` int,
+  `role_id` int
+);
+
+CREATE TABLE `Roles` (
+  `id` int PRIMARY KEY,
+  `role` varchar(255)
+);
+
+ALTER TABLE `Liaisons` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
+
+ALTER TABLE `Role` ADD FOREIGN KEY (`id`) REFERENCES `Liaisons` (`role_id`);

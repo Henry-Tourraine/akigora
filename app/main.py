@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 import flask
 from dash.dependencies import Input, Output
 
-from pages import homepage, direction, rh, marketing, commercial, technique
+from pages import homepage, direction, rh, marketing, commercial, technique, login
 
 server = flask.Flask(__name__)  # define flask app.server
 
@@ -29,7 +29,7 @@ app.layout = (
     ]))
 
 
-@app.callback(Output(   'url', 'pathname'),
+@app.callback(Output('url', 'pathname'),
               Input('url', 'pathname'))
 def update_pathname(pathname):
     return pathname
@@ -50,11 +50,11 @@ def display_page(pathname):
         return commercial.layout
     elif pathname == '/technique':
         return technique.layout
+    elif pathname == '/login':
+        return login.layout
     else:
         return '404 - Page not found'
 
-
-# @app.callback()
 
 if __name__ == '__main__':
     app.run_server(debug=True)
