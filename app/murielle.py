@@ -11,7 +11,7 @@ class MurielleController:
   def __init__(self):
     myclient = pymongo.MongoClient(os.environ["MONGODB"])
     self.db = myclient[os.environ["DB"]]
-    self.config_file = pd.read_csv(os.environ["configFile"])
+    self.config_file = pd.read_csv(os.environ["CONFIG"])
     self.data = Dating(db=myclient[os.environ["DB"]])
     self.cleaning = Cleaning()
     self.engineering = Engineering

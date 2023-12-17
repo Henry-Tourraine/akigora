@@ -2,3 +2,4 @@ dash==2.14.2
 plotly
 pandas
 gunicorn
+pymongo

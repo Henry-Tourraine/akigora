@@ -51,7 +51,7 @@ def display_page(pathname):
     elif pathname == '/technique':
         return technique.layout
     elif pathname == '/login':
-        return login.layout
+       return login.generate_login(app)
     else:
         return '404 - Page not found'
 
