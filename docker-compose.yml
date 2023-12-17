@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:8080"
     volumes:
-      - volume:/var/volume
+      - ./volume:/var/volume
     environment:
       - CONFIG="/var/volume/config.csv"
       - DB="mydatabase"
@@ -34,3 +34,4 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
