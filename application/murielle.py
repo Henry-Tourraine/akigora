@@ -2,10 +2,10 @@ import pymongo
 import os
 import pandas as pd
 import json
-from app.components.dating import Dating
-from app.components.cleaning import Cleaning
-from app.components.engineering import Engineering
-from app.components.ploting import Plotting
+from components.dating import Dating
+from components.cleaning import Cleaning
+from components.engineering import Engineering
+from components.ploting import Plotting
 
 class MurielleController:
   def __init__(self):
@@ -14,7 +14,7 @@ class MurielleController:
     self.config_file = pd.read_csv(os.environ["CONFIG"])
     self.data = Dating(db=myclient[os.environ["DB"]])
     self.cleaning = Cleaning()
-    self.engineering = Engineering
+    self.engineering = Engineering()
     self.ploting = Plotting()
 
   def get_departments(self):
@@ -22,6 +22,7 @@ class MurielleController:
 
   def get_all_indicators_by_department(self, department_name):
     indicators_to_process = self.config_file.loc[self.config_file["department"] == department_name]
+    print(indicators_to_process)
     indicators_to_process_list_dict = indicators_to_process.to_dict(orient="records")
     results = []
     for indicator_row in indicators_to_process_list_dict:

@@ -1,0 +1,132 @@
+,department,name,data,engineering,plotting
+0,RH,Nombre d'experts inscrits sur la plateforme,"{
+  ""collection"": ""profile"",
+     ""data"": {
+                ""type"": ""expert"",
+                 ""createdAt"": null}
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": null}
+                   ]
+ }
+]","{
+    ""indicateur_1"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [
+            { 
+            ""name"":""slider"",
+           ""colonne"":""createdAt"",
+           ""span"":[0,12000],
+           ""range"":[0,12000],
+           ""type"": ""datetime""
+          }
+            ]
+    }
+}"
+1,RH,% d'experts à profil complété à 100%,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                                ""createdAt"": null,
+                                ""type"": ""expert"",
+                                ""domains"": null
+                            }
+}","[
+ {
+    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""domains""], ""aggfunc"": ""count""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": null}
+                     ]
+ }
+]","{
+    ""indicateur_1"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [
+            { 
+            ""name"":""slider"",
+           ""colonne"":""createdAt"",
+           ""span"":[0,12000],
+           ""range"":[0,12000],
+           ""type"": ""datetime""
+}
+            ]
+    }
+}"
+2,RH,% d'experts par domaine d'intervention ,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                                ""type"": ""expert"",
+                                ""sectors"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""sectors"", ""type"": null}
+                     ]
+ }
+]","{
+    ""indicateur_1"": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+3,Commerce,Nombre d'heure de missions,"{
+                        ""collection"": ""intervention"",
+                        ""data"": {
+                              ""hours_planned"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""hours_planned"", ""type"": null}
+                     ]
+ }
+]","{
+    ""indicateur_1"": {
+        ""type_plot"": ""gauge"",
+        ""plot_options"": {},
+        ""filters"": [
+            { 
+            ""name"":""slider"",
+           ""colonne"":""hours_planned"",
+           ""span"":[0,12000],
+           ""range"":[0,12000],
+           ""type"": ""int""
+          }
+            ]
+    }
+}"
+4,Custom,Nombre de femmes par ville,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                              ""civility"": ""female"",
+                              ""company.address"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""company.address""], ""aggfunc"": ""count""},
+    ""colonnes"": [
+        {""name"": ""civility"", ""type"": null}
+                     ]
+ }
+]","{
+    ""indicateur_1"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [
+            { 
+            ""name"":""select"",
+           ""colonne"":""company.address"",
+           ""selected"":0,
+           ""type"": ""string""
+}
+            ]
+    }
+}"

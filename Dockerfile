@@ -1,8 +1,8 @@
 FROM python:3.10
 
 ENV DASH_DEBUG_MODE False
-COPY ./app /app
-WORKDIR /app
+COPY ./application /application
+WORKDIR /application
 RUN apt-get update
 RUN apt-get install
 RUN pip install -r requirements.txt
