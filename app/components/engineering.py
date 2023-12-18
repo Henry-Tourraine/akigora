@@ -185,6 +185,8 @@ class Engineering:
             # handling for group_by
             elif operation['fonction'] == 'group_by':
                 result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
+		print("groupby result")
+		print(result)
                 buffer.append(result)
 
             else:

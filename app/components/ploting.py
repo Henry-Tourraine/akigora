@@ -29,8 +29,7 @@ class Plotting:
                         fig = go.Figure(data=[go.Choropleth(geojson=data, **plot_options)])
                     elif type_plot == "bar":
                         print("ploting")
-                        print(data[-2])
-                        print(data[-1])
+                        print(data)
                         fig = go.Figure(data=[go.Bar(data[-1], x=data[-1].columns[0], y=data[-1].columns[1], **plot_options)])
                     else:
                         print(f"Type de plot non supporté: {type_plot}")
