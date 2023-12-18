@@ -1,7 +1,6 @@
 from math import isnan
 import pandas as pd
-#all characters are unidcode in python3
-#import unidecode as ud
+import unidecode as ud
 import numpy as np
 import re
 
@@ -9,55 +8,52 @@ import re
 class Cleaning:
 
     def __init__(self):
+        '''
+        Create a new instance of the class with all constants and dataset useful for the cleaning process.
+        '''
+        # Dataframe with list of towns and related geographical info (to get regions, departments, etc.)
         self.link_towns_regions = "https://www.data.gouv.fr/fr/datasets/r/dbe8a621-a9c4-4bc3-9cae-be1699c5ff25"  
-        self.df_nom_villes = pd.read_csv(self.link_towns_regions)[["libelle_acheminement","nom_commune_complet","nom_region"]]        
+        self.df_nom_villes = pd.read_csv(self.link_towns_regions)[["libelle_acheminement", "nom_commune_complet", "nom_region"]]
         self.df_nom_villes["nom_commune_complet"] = self.df_nom_villes["nom_commune_complet"].str.strip(" 1234567890")
-        
-        # TODO : on garde ou on dégage
-        # self.methodes = {
-        #     0: 'fillna',
-        #     1: 'nettoyageCreatedAt',
-        #     2: 'expertsVisibles',
-        #     3: 'expertsDesinscrits'
-        # }
-        
+        # These constants are the default values used to fill the NaN in the dataset
         self.defaut_string = 'Inconnu'
         self.defaut_negatif_float = -1.0
         self.defaut_negatif_int = -1
-          
-        # liste colonne en format datetime
+        # Columns with date format
         self.liste_date = ['createdAt']
-        # liste colonne en format float
-        self.liste_nan_numeriques = ['hours_planned', 'daily_hourly.daily_prices',"daily_hourly_prices.daily_price_max",'percentage','note_communication','note_quality','note_level']
-        # liste colonne en format str
-        self.liste_nan_str = ['companyOrSchool', 'company.address', 'experienceTime','studyLevel', 'company.type','done','visible','isFake','temporarilyInvisible','sector']    
-        # liste colonne contenant des ville
+        # Columns with float format
+        self.liste_nan_numeriques = ['hours_planned', 'daily_hourly.daily_prices', "daily_hourly_prices.daily_price_max", 'percentage', 'note_communication', 'note_quality', 'note_level']
+        # Columns with str format
+        self.liste_nan_str = ['companyOrSchool', 'company.address', 'experienceTime', 'studyLevel', 'company.type', 'done', 'visible', 'isFake', 'temporarilyInvisible', 'sector']    
+        # Columns containing addresses
         self.liste_villes = ['company.address']
-        # liste colonne des horaires
+        # Columns containing time in hours
         self.liste_horaires = ['hours_planned']
-        # liste colonne en format timestamp
+        # Columns with timestamp format
         self.liste_timestamp = ['createdAt']
-        # liste contenant des catégorie ages
+        # Columns containing age categories
         self.colonne_age_categories = 'experienceTime'
-        # liste contenant des catégorie study
+        # Columns containing study levels categories
         self.colonne_study_categories = 'studyLevel'
-    
+        # List of dictionaries to link columns with their specific cleaning functions
+        self.dico_cleans = [{"name": "liste_date", "columns": self.liste_date, "function": self.nettoyage_date},
+                            {"name": "liste_villes", "columns": self.liste_villes, "function": self.nettoyage_villes},
+                            {"name": "liste_horaires", "columns": self.liste_horaires, "function": self.nettoyage_horaires},
+                            {"name": "liste_timestamp", "columns": self.liste_timestamp, "function": self.nettoyage_timestamp},
+                            {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.fill_nan_num},
+                            {"name": "liste_nan_str", "columns": self.liste_nan_str, "function": self.fill_nan_str}
+                            ]
+
     def __check(self):
         pass
 
     def process(self, df):
-        #move columns and definitions in one single dict
-        cleans = [{"name": "liste_date", "columns": ['createdAt'], "function": self.nettoyage_date},
-        {"name": "liste_villes", "columns": ['company.address'], "function": self.nettoyage_villes},
-          {"name": "liste_horaires", "columns": ['hours_planned'], "function": self.nettoyage_horaires},
-          {"name": "liste_timestamp", "columns": ['createdAt'], "function": self.nettoyage_timestamp},
-          {"name": "liste_nan_numeriques","columns":  ['hours_planned', 'daily_hourly.daily_prices',"daily_hourly_prices.daily_price_max",'percentage','note_communication','note_quality','note_level'], "function": self.fill_nan_num},
-          {"name": "liste_nan_str", "columns": ['companyOrSchool', 'company.address', 'experienceTime','studyLevel', 'company.type','done','visible','isFake','temporarilyInvisible','sector'] , "function": self.fill_nan_str},
-        ]
-
-        #use regex to match columns because of columns aliasing in pd.merge...
-        
-        for clean in cleans:
+        '''
+        INPUT: dataframe with NaN, incorrect data formats.
+        OUTPUT: dataframe with NaN filled and data formats coherent with clients needs.
+        '''
+        # use regex to match columns because of columns aliasing in pd.merge from dating class
+        for clean in self.dico_cleans:
             for colonne in clean["columns"]:
                 a = re.compile(f"{colonne}")
                 matches = list(filter(a.match, df.columns))
@@ -65,13 +61,12 @@ class Cleaning:
                     df = clean["function"](df, match_)
                 if df is None:
                     break
-                    #df[match_] = df[colonne].apply(clean["function"])
+                    # df[match_] = df[colonne].apply(clean["function"])
 
         a = re.compile(f"{self.colonne_age_categories}")
         matches = list(filter(a.match, df.columns))
         for match_ in matches:
             df[match_] = self.get_age_categories(df, match_)
-
 
         a = re.compile(f"{self.colonne_study_categories}")
         matches = list(filter(a.match, df.columns))
@@ -113,47 +108,52 @@ class Cleaning:
                 df[colonne] = df[colonne].fillna(self.defaut_negatif_float, inplace=True)
 
         # fillna Inconnu
-        for colonne in self.liste_nan_str:
+        for colonne in self.liste_nan_st    r:
             if colonne in df.columns:
                 df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
         return df, None
 
-
     def fill_nan_num(self, df, colonne):
-          df[colonne].fillna(self.defaut_negatif_float, inplace=True)
-          return df
+        df[colonne].fillna(self.defaut_negatif_float, inplace=True)
+        return df
 
     def fill_nan_str(self, df, colonne):
-      df[colonne].fillna(self.defaut_string, inplace=True)
-      return df    
+        df[colonne].fillna(self.defaut_string, inplace=True)
+        return df    
 
     def create_flag(self, df, colonne):
         nom = f"dummy_value_{colonne}"
         df[nom] = df[colonne].apply(pd.isna)
         return df
 
-
     def nettoyage_date(self, df, colonne):
+        '''
+        INPUT: dataframe with date with wrong date formats
+        OUTPUT: dataframe with date formatted as 'DD/MM/YYYY'
+        ex: 01/010/2260 -> 01/10/2260
+        '''
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
-        #df[colonne].str.replace("\d{2}\/d{2}\/d{4}", r'\1', regex=True)
+        
         def remove_n(df):
-          if len(df[colonne]) < 3:
-              df[colonne] = "01/12/2260"
-              return df
-          temp = df[colonne].split("/")
-          df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
-          return df
+            if len(df[colonne]) < 3:
+                df[colonne] = "01/12/2260"
+                return df
+            temp = df[colonne].split("/")
+            df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
+            return df
         df.apply(remove_n, axis=1)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
-        return df
-       
+        return df     
 
     def nettoyage_timestamp(self, df, colonne):
         df[colonne] = pd.to_datetime(df[colonne])
         return df
-        
 
     def get_age_categories(self, df, colonne):
+        '''
+        INPUT: dataframe with mixed age categories
+        OUTPUT: dataframe with coherent age categories with current forms used by Akigora for its providers
+        '''
         df[colonne].replace(to_replace='mois de 10 ans', value='moins de 10 ans', inplace=True)
         df[colonne].replace(to_replace='+ de 30 ans', value='+ de 25 ans', inplace=True)
         df[colonne].replace(to_replace='moins de 10 ans', value=self.defaut_string, inplace=True)
@@ -162,6 +162,11 @@ class Cleaning:
         return df
 
     def get_study_levels(self, df, colonne):
+        '''
+        INPUT: dataframe with study levels incorrectly formatted
+        OUTPUT: dataframe with study levels correctly formatted
+        ex: Bac + 3 -> Bac+3
+        '''
         df[colonne].replace(to_replace='Bac +5', value='Bac5', inplace=True)
         df[colonne].replace(to_replace='Bac + 8', value='Bac8', inplace=True)
         df[colonne].replace(to_replace='Bac + 3', value='Bac3', inplace=True)
@@ -173,15 +178,24 @@ class Cleaning:
         return df
 
     def is_a_dummy_value(self, val):
+        '''
+        INPUT: variable
+        OUTPUT: boolean to check if NaN or not a float
+        '''
         try:
             float(val)
-            return isnan(float(val))    
+            return isnan(float(val))
         except ValueError:
             return True
-      
+
     def nettoyage_horaires(self, df, colonne):
-        # hours_planned
-        # nettoyage des erreurs redondantes
+        '''
+        INPUT: hours planned with various formats
+        OUTPUT: number of hours as float
+        ex1: 18 heures -> 18
+        ex2: 24,5 Heures -> 24.5
+        ex3: 40 Heures/Groupe -> inconnu
+        '''
         df[colonne].replace(to_replace=",", value=".", inplace=True, regex=True)
         df[colonne].replace(to_replace=[" Heures", " heures"], value="", inplace=True, regex=True)
 
@@ -189,30 +203,38 @@ class Cleaning:
         df["dummy_value"] = df[colonne].apply(self.is_a_dummy_value)
 
         # Traitement NaN (on les met à 0 mais identifiées comme 'dummy_value'=True)
-        df.fillna("0", inplace=True)
+        df.fillna(str(self.defaut_negatif_float), inplace=True)
 
         # Traitement des autres valeurs erronées (on les met à 0 mais identifiées comme 'dummy_value'=True)
-        df.loc[mask_dummy_value, colonne] = "0"
+        df.loc[mask_dummy_value, colonne] = str(self.defaut_negatif_float)
 
         # Formatage en float
         df[colonne] = df[colonne].astype('float')
 
         return df
-    
+
     def nettoyage_villes(self, df, colonne):
         df[colonne].apply(self.get_town)
         return df
-   
 
-    def get_region(self, town):    
-        '''This function takes a town name with accents and quotes. Output is the french region where this town is (ex: Nouvelle Aquitaine)'''
+    def get_region(self, town):
+        '''
+        INPUT: town with first letter as capital and accents
+        OUTPUT: french region where this town is 
+        ex: Nouvelle Aquitaine
+        '''
         if len(list(self.df_nom_villes[self.df_nom_villes["nom_commune_complet"] == town]["nom_region"])) > 0:
             return list(self.df_nom_villes[self.df_nom_villes["nom_commune_complet"] == town]["nom_region"])[0]
         else:
             return self.defaut_string
 
     def get_town(self, native_adress):
-        '''This function takes an adress as input. Output is the name of the town in adress, with accents and quotes'''
+        '''
+        INPUT: adress with variable format
+        OUTPUT: name of the town in the given address, with accents and quotes
+        ex1: 349, rue de la Cavalade - 34000 Montpellier -> Montpellier
+        ex2: 4 Quai des Queyries, Bordeaux, France -> Bordeaux
+        '''
         output_adress = ''
         if isinstance(native_adress, float):
             return self.defaut_string
@@ -224,7 +246,6 @@ class Cleaning:
             elif len(items_adress) == 1 and items_adress[0] != "":
                 if len(items_adress[0].split(" ")) <= 2:
                     town = items_adress[0]
-                    #output_adress = self.name_town_perfectly(town.strip(", ").upper()))
                     output_adress = self.name_town_perfectly(town.strip(", ").upper())
                 else:
                     town = items_adress[0].split(" ")[-1]
@@ -247,8 +268,13 @@ class Cleaning:
         return output_adress
     
     def name_town_perfectly(self, town_upper):
-        '''This function takes a town name in upper case as input. If this town is french, the function returns the name with accents and quotes'''
-        mask = self.df_nom_villes["libelle_acheminement"] == town_upper
+        '''
+        INPUT: town name in upper case
+        OUTPUT: name of town with accents and quotes
+        ex: MERIGNAC -> Mérignac
+        '''
+        town_unidecode = ud.unidecode(town_upper)
+        mask = self.df_nom_villes["libelle_acheminement"] == town_unidecode
         if len(list(self.df_nom_villes[mask]["nom_commune_complet"])) == 0:
             return self.defaut_string
         else:
