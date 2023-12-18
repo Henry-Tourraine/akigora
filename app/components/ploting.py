@@ -30,8 +30,10 @@ class Plotting:
                     elif type_plot == "bar":
                         print("ploting")
                         print(type(data[-1]))
-                        print(data)
-                        fig = go.Figure(data=[go.Bar(data[-1], x=data[-1].columns[0], y=data[-1].columns[1], **plot_options)])
+                        print(data[-1])
+                        print(type(data[-2]))
+                        print(data[-2])
+                        fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
                     else:
                         print(f"Type de plot non supporté: {type_plot}")
 

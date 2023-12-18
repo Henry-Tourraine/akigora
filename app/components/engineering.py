@@ -93,7 +93,8 @@ class Operations:
           print("groupy count")
           temp = df.groupby(joinColumns, as_index=False)[columns].count()
           print(temp)
-          return temp[[*joinColumns, *columns]]
+          #return temp[[*joinColumns, *columns]]
+          return temp[joinColumns], temp[columns]
       else:
           return np.NaN, np.NaN
 
@@ -190,7 +191,8 @@ class Engineering:
               print(operation.get("aggfunc"))
               result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
               print(result)
-              buffer.append(result)
+              buffer.append(result[0])
+              buffer.append(result[1])
 
             else:
                 result = Operations.operations[operation['fonction']](df, colonnes, result=result)
