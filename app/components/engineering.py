@@ -90,8 +90,10 @@ class Operations:
         temp = df.groupby(joinColumns, as_index=False)[columns].max()
         return temp[joinColumns], temp[columns]
       elif operation == "count":
+	print("groupy count")
         temp = df.groupby(joinColumns, as_index=False)[columns].count()
-        return temp[joinColumns], temp[columns]
+	print(temp)
+        return temp[[*joinColumns, *columns]]
       else:
          return np.NaN, np.NaN
 
@@ -184,8 +186,9 @@ class Engineering:
                 print(f"print 2: {buffer}")
             # handling for group_by
             elif operation['fonction'] == 'group_by':
-                result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
 		print("groupby result")
+		print(operation.get("aggfunc"))
+                result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
 		print(result)
                 buffer.append(result)
 
