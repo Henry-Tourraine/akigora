@@ -114,26 +114,38 @@ class Cleaning:
         return df, None
 
     def fill_nan_num(self, df, colonne):
+        '''
+        INPUT: dataframe with NaN and column name
+        OUTPUT: dataframe with NaN filled with dummy numeric values given client decisions
+        '''
         df[colonne].fillna(self.defaut_negatif_float, inplace=True)
         return df
 
     def fill_nan_str(self, df, colonne):
+        '''
+        INPUT: dataframe with NaN and column name
+        OUTPUT: dataframe with NaN filled with dummy string values given client decisions
+        '''
         df[colonne].fillna(self.defaut_string, inplace=True)
         return df    
 
     def create_flag(self, df, colonne):
+        '''
+        INPUT: dataframe and column name
+        OUTPUT: dataframe with a new column as a flag with True / False whether the input column name contains a value or not
+        '''
         nom = f"dummy_value_{colonne}"
         df[nom] = df[colonne].apply(pd.isna)
         return df
 
     def nettoyage_date(self, df, colonne):
         '''
-        INPUT: dataframe with date with wrong date formats
+        INPUT: dataframe with date values with wrong date formats
         OUTPUT: dataframe with date formatted as 'DD/MM/YYYY'
         ex: 01/010/2260 -> 01/10/2260
         '''
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
-        
+
         def remove_n(df):
             if len(df[colonne]) < 3:
                 df[colonne] = "01/12/2260"
@@ -146,6 +158,10 @@ class Cleaning:
         return df     
 
     def nettoyage_timestamp(self, df, colonne):
+        '''
+        INPUT: dataframe with timestamp values and column name
+        OUTPUT: dataframe with values erased in input column and replaced by the same values with datetime format
+        '''
         df[colonne] = pd.to_datetime(df[colonne])
         return df
 
@@ -179,8 +195,8 @@ class Cleaning:
 
     def is_a_dummy_value(self, val):
         '''
-        INPUT: variable
-        OUTPUT: boolean to check if NaN or not a float
+        INPUT: variable with any format
+        OUTPUT: boolean to check whether the variable is NaN / not a float or not
         '''
         try:
             float(val)
@@ -214,14 +230,18 @@ class Cleaning:
         return df
 
     def nettoyage_villes(self, df, colonne):
+        '''
+        INPUT: dataframe and column name; the given column contains adresses with various formats
+        OUTPUT: same dataframe; adresses values are replaced with only the name of town inside the address
+        '''
         df[colonne].apply(self.get_town)
         return df
 
     def get_region(self, town):
         '''
         INPUT: town with first letter as capital and accents
-        OUTPUT: french region where this town is 
-        ex: Nouvelle Aquitaine
+        OUTPUT: french region where this town is set
+        ex: Bordeaux -> Nouvelle Aquitaine
         '''
         if len(list(self.df_nom_villes[self.df_nom_villes["nom_commune_complet"] == town]["nom_region"])) > 0:
             return list(self.df_nom_villes[self.df_nom_villes["nom_commune_complet"] == town]["nom_region"])[0]
