@@ -186,10 +186,10 @@ class Engineering:
                 print(f"print 2: {buffer}")
             # handling for group_by
             elif operation['fonction'] == 'group_by':
-		print("groupby result")
-		print(operation.get("aggfunc"))
+                print("groupby result")
+                print(operation.get("aggfunc"))
                 result = Operations.group_by(df, operation.get("groupColumns"), colonnes, operation.get("aggfunc"))
-		print(result)
+		            print(result)
                 buffer.append(result)
 
             else:
