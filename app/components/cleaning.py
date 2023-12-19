@@ -66,12 +66,12 @@ class Cleaning:
         a = re.compile(f"{self.colonne_age_categories}")
         matches = list(filter(a.match, df.columns))
         for match_ in matches:
-            df[match_] = self.get_age_categories(df, match_)
+            df = self.get_age_categories(df, match_)
 
         a = re.compile(f"{self.colonne_study_categories}")
         matches = list(filter(a.match, df.columns))
         for match_ in matches:
-            df[match_] = self.get_study_levels(df, match_)
+            df = self.get_study_levels(df, match_)
 
         """
         # changement de format de date
@@ -144,9 +144,10 @@ class Cleaning:
         OUTPUT: dataframe with date formatted as 'DD/MM/YYYY'
         ex: 01/010/2260 -> 01/10/2260
         '''
-        if int(df.loc[~df[colonne].isna()][colonne][0]) > 1000000: #is timestamp
-                df[colonne] = pd.to_datetime(df[colonne], unit="ms")
-                return df  
+        if len(str(df.loc[~df[colonne].isna()][colonne][0])) >= 12: #is timestamp
+            df[colonne] = pd.to_datetime(df[colonne], unit="ms")
+            print()
+            return df  
         
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
 
