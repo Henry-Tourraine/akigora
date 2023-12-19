@@ -153,6 +153,8 @@ class Cleaning:
             temp = df[colonne].split("/")
             df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
             return df
+        print("remove_n")
+        print(temp)
         df.apply(remove_n, axis=1)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
         return df     
