@@ -45,6 +45,9 @@ class Operations:
         return df[df[colonne].str.contains(str(valeur)).any()]
 
     def unique(df, colonne):
+        return df[colonne[0]].unique()
+    
+    def unique_multi(df, colonne):
         return df[colonne].unique()
 
     def value_counts(df, colonne, result=None):
@@ -63,6 +66,18 @@ class Operations:
         else:
           return 'erreur de buffer'
 
+    def pop(buffer, index):
+       if len(buffer) >= index+1:
+          buffer = [*buffer[:len(buffer)-index-1], *buffer[len(buffer)-index:]]
+          return buffer
+       return None
+
+    def swap(buffer, index1, index2):
+       if len(buffer) >= index1+1 and len(buffer) >= index2+1:
+          temp = buffer[index1]
+          buffer[index1] = buffer[index2]
+          buffer[index2] = temp
+          return buffer
 
     def add(df, colonne, result=None, value=None):
       df = Operations.filtre(df, colonne)
@@ -108,6 +123,7 @@ class Operations:
         "moyenne": moyenne,
         "contient": contient,
         "unique": unique,
+        "unique_multi": unique_multi,
         "value_counts": value_counts,
         "div": div,
         "add": add,
@@ -115,7 +131,9 @@ class Operations:
         "div_buffer" : div_buffer,
         "mul_buffer" : mul_buffer,
         "moyenne_buffer": moyenne_buffer,
-        "group_by": group_by
+        "group_by": group_by,
+        "pop": pop,
+        "swap": swap
     }
 
 
@@ -173,8 +191,22 @@ class Engineering:
                   result = Operations.mul_buffer(buffer=buffer, value=operation.get('value'))
                   buffer.append(result)
 
+            elif operation['fonction'] == 'pop':
+                print('fonction == pop')
+                result = Operations.pop(buffer, operation.get("index"))
+                if result is not None:
+                   buffer = result
+                else:
+                   print("pop result is none")
 
-            # penser a implementer la logique de contient
+            elif operation['fonction'] == 'swap':
+                print('fonction == swap')
+                result = Operations.swap(buffer, operation.get("index1"), operation.get("index2"))
+                if result is not None:
+                   buffer = result
+                else:
+                   print("pop result is none")
+
             elif operation['fonction'] == 'contient':
                 print('fonction == contient')
                 result = Operations.contient(df, colonnes, operation.get("value"))
