@@ -144,7 +144,7 @@ class Cleaning:
         OUTPUT: dataframe with date formatted as 'DD/MM/YYYY'
         ex: 01/010/2260 -> 01/10/2260
         '''
-        if df.loc[~df[colonne].isna()][0] > 1000000: #is timestamp
+        if df.loc[~df[colonne].isna()][colonne][0] > 1000000: #is timestamp
                 df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y", unit="ms")
                 return df  
         
