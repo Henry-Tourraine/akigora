@@ -25,6 +25,11 @@ class MurielleController:
     indicators_to_process_list_dict = indicators_to_process.to_dict(orient="records")
     results = []
     for indicator_row in indicators_to_process_list_dict:
+      print("---------------------------------------------------------------------------------------------->")
+      print(f'departement : {indicator_row["department"]}')
+      print(f'indicateur : {indicator_row["name"]}')
+      print("---------------------------------------------------------------------------------------------->")
+      print("data")
       data = json.loads(indicator_row["data"])
       #DATA PASS
       (df, err) = self.data.process(data)
@@ -32,6 +37,8 @@ class MurielleController:
         return None, f"Failed at data : {err}"
       print("df_data :")
       print(df)
+      print("---------------------------------------------------------------------------------------------->")
+      print("cleaning")
       #CLEANING PASS
       if self.cleaning is not None:
         #cleaning = json.loads(indicator_row["cleaning"])
@@ -40,6 +47,9 @@ class MurielleController:
           return None, f"Failed at cleaning : {err}"
       print(type(df))
       print(df)
+
+      print("---------------------------------------------------------------------------------------------->")
+      print("engineering")
       #ENGINEERING PASS
       #CHECK IF REFRESH IS NEEEDED
       if self.engineering is not None:
@@ -49,6 +59,8 @@ class MurielleController:
       if err is not None:
         return None, f"Failed at engineering : {err}"
 
+      print("---------------------------------------------------------------------------------------------->")
+      print("plotting")
       #PLOTING
       if self.ploting is not None:
         ploting = json.loads(indicator_row["plotting"])
