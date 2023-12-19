@@ -145,7 +145,7 @@ class Cleaning:
         ex: 01/010/2260 -> 01/10/2260
         '''
         if int(df.loc[~df[colonne].isna()][colonne][0]) > 1000000: #is timestamp
-                df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y", unit="ms")
+                df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
                 return df  
         
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
