@@ -144,12 +144,13 @@ class Cleaning:
         OUTPUT: dataframe with date formatted as 'DD/MM/YYYY'
         ex: 01/010/2260 -> 01/10/2260
         '''
+        if df.loc[~df["colonne"].isna()][0] > 1000000: #is timestamp
+                df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y", unit="ms")
+                return df  
+        
         df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
 
         def remove_n(df):
-            if df.loc[~df["colonne"].isna()][0] > 1000000: #is timestamp
-                df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y", unit="ms")
-                return df  
             if len(df[colonne]) < 3:
                 df[colonne] = "01/12/2260"
                 return df
@@ -157,7 +158,6 @@ class Cleaning:
             df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
             return df
         print("remove_n")
-        print(temp)
         df.apply(remove_n, axis=1)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
         return df     
