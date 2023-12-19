@@ -11,13 +11,17 @@ class Operations:
         return df
       else:
         for colonne in colonnes:
-          if colonne["type"] is not None:
+          if colonne["type"] is not None and colonne["name"] != "result":
             if "comparateur" in colonne:
               df = df.loc[comparateur[colonne["comparateur"]](colonne["name"], colonne["type"])]
-              return df
-            print("filtre")
-            df = df.loc[df[colonne["name"]] == colonne["type"]]
-        return df[[colonne["name"] for colonne in colonnes]]
+            elif colonne["type"] == "is_empty":
+               df = df.loc[(df[colonne["name"]].isna()) | (df[colonne["name"]] == "")]
+            elif colonne["type"] == "is_not_empty":
+               df = df.loc[(df[colonne["name"]].notna()) & (df[colonne["name"]] != "")]
+            else: # no comaprateur
+              print("filtre")
+              df = df.loc[df[colonne["name"]] == colonne["type"]]
+        return df[[colonne["name"] for colonne in colonnes if colonne["name"] != "result"]] #get all colonnes
 
 # ici on implémente nos méthodes de calcul
     def longueur(df, colonne, result=None, value=None):
@@ -38,7 +42,7 @@ class Operations:
 
     def contient(df, colonne, valeur):
         print('fonction == contient')
-        return df[colonne].str.contains(str(valeur)).any()
+        return df[df[colonne].str.contains(str(valeur)).any()]
 
     def unique(df, colonne):
         return df[colonne].unique()
@@ -171,8 +175,11 @@ class Engineering:
 
 
             # penser a implementer la logique de contient
-            if operation['fonction'] == 'contient':
+            elif operation['fonction'] == 'contient':
                 print('fonction == contient')
+                result = Operations.contient(df, colonnes, operation.get("value"))
+                buffer.append(result[result.columns[0]])
+
             elif operation['fonction'] == 'add' or operation['fonction'] == 'div' or operation['fonction'] == 'mul':
                 print(colonnes)
                 col_list = colonnes
@@ -186,6 +193,16 @@ class Engineering:
                 buffer.append(result)
                 print(f"print 2: {buffer}")
             # handling for group_by
+                
+            # penser a implementer la logique de contient
+            elif operation['fonction'] == 'value_counts':
+                result = Operations.value_counts(df, colonnes, result=result)
+                index = result.index
+                serie = result.values
+                buffer.append(index)
+                buffer.append(serie)
+                print('fonction == contient')
+
             elif operation['fonction'] == 'group_by':
               print("groupby result")
               print(operation.get("aggfunc"))
