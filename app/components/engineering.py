@@ -25,6 +25,11 @@ class Operations:
 
 # ici on implémente nos méthodes de calcul
     def longueur(df, colonne, result=None, value=None):
+        print("longueur")
+        print("colonne")
+        print(colonne)
+        print("df.columns")
+        print(df.columns)
         df = Operations.filtre(df, colonne)
         length = len(df)
         return length
