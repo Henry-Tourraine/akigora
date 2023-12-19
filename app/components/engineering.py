@@ -11,7 +11,7 @@ class Operations:
         return df
       else:
         for colonne in colonnes:
-          if colonne["type"] is not None and colonne["name"] != "result":
+          if "type" in colonne  and colonne["type"] is not None and colonne["name"] != "result":
             if "comparateur" in colonne:
               df = df.loc[comparateur[colonne["comparateur"]](colonne["name"], colonne["type"])]
             elif colonne["type"] == "is_empty":
@@ -238,7 +238,7 @@ class Engineering:
                 serie = result.values
                 buffer.append(index)
                 buffer.append(serie)
-                print('fonction == contient')
+                print("value counts")
 
             elif operation['fonction'] == 'group_by':
               print("groupby result")
