@@ -12,9 +12,8 @@ class Cleaning:
         Create a new instance of the class with all constants and dataset useful for the cleaning process.
         '''
         # Dataframe with list of towns and related geographical info (to get regions, departments, etc.)
-        # TODO 
-        # self.link_towns_regions = "https://www.data.gouv.fr/fr/datasets/r/dbe8a621-a9c4-4bc3-9cae-be1699c5ff25"  
-        self.link_towns_regions = "../../../csv/communes-departement-region.csv"
+        self.link_towns_regions = "https://www.data.gouv.fr/fr/datasets/r/dbe8a621-a9c4-4bc3-9cae-be1699c5ff25"  
+        # self.link_towns_regions = "../../../csv/communes-departement-region.csv"
         self.df_nom_villes = pd.read_csv(self.link_towns_regions)[["libelle_acheminement", "nom_commune_complet", "nom_region"]]
         self.df_nom_villes["nom_commune_complet"] = self.df_nom_villes["nom_commune_complet"].str.strip(" 1234567890")
         # These constants are the default values used to fill the NaN in the dataset
