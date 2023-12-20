@@ -24,7 +24,7 @@ class Cleaning:
         # Columns with date format
         self.liste_date = ['createdAt']
         # Columns with float format
-        self.liste_nan_numeriques = ['hours_planned', 'daily_hourly.daily_prices', "daily_hourly_prices.daily_price_max", 'percentage', 'note_communication', 'note_quality', 'note_level']
+        self.liste_nan_numeriques = ['hours_planned', "daily_hourly_prices.daily_price_min", "daily_hourly_prices.daily_price_max", "daily_hourly_prices.hourly_price_min", "daily_hourly_prices.hourly_price_max", 'percentage', 'note_communication', 'note_quality', 'note_level']
         # Columns with str format
         self.liste_nan_str = ['companyOrSchool', 'company.address', 'experienceTime', 'studyLevel', 'company.type', 'done', 'visible', 'isFake', 'temporarilyInvisible', 'sector']    
         # Columns containing addresses to convert to towns
@@ -45,7 +45,7 @@ class Cleaning:
                             {"name": "liste_regions", "columns": self.liste_regions, "function": self.conversion_region},
                             {"name": "liste_horaires", "columns": self.liste_horaires, "function": self.nettoyage_horaires},
                             {"name": "liste_timestamp", "columns": self.liste_timestamp, "function": self.nettoyage_timestamp},
-                            # {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.fill_nan_num},
+                            {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.convert_to_float},
                             {"name": "liste_nan_str", "columns": self.liste_nan_str, "function": self.fill_nan_str}
                             ]
 
@@ -86,6 +86,14 @@ class Cleaning:
         OUTPUT: dataframe with NaN filled with dummy numeric values given client decisions
         '''
         df[colonne].fillna(self.defaut_negatif_float, inplace=True)
+        return df
+    
+    def convert_to_float(self, df, colonne):
+        '''
+        INPUT: dataframe with column containing numerics in various formats (object...)
+        OUTPUT: dataframe with column type as float64
+        '''
+        df[colonne] = df[colonne].astype("float64")
         return df
 
     def fill_nan_str(self, df, colonne):
