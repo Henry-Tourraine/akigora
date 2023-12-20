@@ -252,7 +252,7 @@ class Engineering:
 
             # handling for unique
             elif operation['fonction'] == 'unique':
-                result = Operations.unqiue(df, colonnes)
+                result = Operations.unique(df, colonnes)
                 buffer.append(result)
                 print("unique")
                 
