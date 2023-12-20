@@ -61,13 +61,15 @@ class Operations:
 
     def contient(df, colonne, valeur):
         print('fonction == contient')
+        #a corriger
         return df[df[colonne].str.contains(str(valeur)).any()]
 
     def unique(df, colonne):
-        return df[colonne[0]].unique()
+        df = Operations.filtre(colonne)
+        return df.unique()
     
     def unique_multi(df, colonne):
-        return df[colonne].unique()
+        return df[[i["name"] for i in colonne]].unique()
 
     def value_counts(df, colonne, result=None):
         print(f"value count {colonne[0]['name']}")
