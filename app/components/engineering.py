@@ -66,7 +66,7 @@ class Operations:
 
     def unique(df, colonne):
         df = Operations.filtre(df, colonne)
-        return df.unique()
+        return df[df.columns[0]].unique()
     
     def unique_multi(df, colonne):
         return df[[i["name"] for i in colonne]].unique()
