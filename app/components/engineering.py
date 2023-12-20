@@ -96,7 +96,7 @@ class Operations:
           return buffer
        return None
 
-    def swap(buffer, index1, index2):
+    def swap(buffer, index1=None, index2=None):
        if len(buffer) >= index1+1 and len(buffer) >= index2+1:
           temp = buffer[index1]
           buffer[index1] = buffer[index2]
@@ -284,6 +284,13 @@ class Engineering:
               print(result)
               buffer.append(result[0])
               buffer.append(result[1])
+
+            elif operation['fonction'] == 'swap':
+              print("groupby result")
+              print(operation.get("aggfunc"))
+              buffer = Operations.swap(buffer, operation.get("index1"), operation.get("index2"))
+              print("swap")
+              print(result)
 
             else:
                 result = Operations.operations[operation['fonction']](df, colonnes, result=result)
