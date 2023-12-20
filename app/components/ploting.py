@@ -21,7 +21,6 @@ class Plotting:
                             data[-1] = data[-1][data[-1].columns[0]]
 
                     if len(data) > 1 and type(data[-2]) == pd.core.frame.DataFrame:
-                        name = data[-2].columns[0]
                         data[-2] = data[-2][data[-2].columns[0]]
 
 
@@ -46,7 +45,7 @@ class Plotting:
                         print(data[-2])
                         
                         #fig = go.Figure(data=[go.Bar(x=data[-2][data[-2].columns[0]], y=data[-1][data[-1].columns[0]], **plot_options)])
-                        fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], name=name, **plot_options)])
+                        fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
                         print(f"names {name}")
                     else:
                         print(f"Type de plot non supporté: {type_plot}")
