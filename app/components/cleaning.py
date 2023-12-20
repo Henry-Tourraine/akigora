@@ -93,6 +93,8 @@ class Cleaning:
         INPUT: dataframe with column containing numerics in various formats (object...)
         OUTPUT: dataframe with column type as float64
         '''
+        df[colonne] = df[colonne].str.strip()
+        df[colonne][df[colonne] == ""] = "NaN"
         df[colonne] = df[colonne].astype("float64")
         return df
 
