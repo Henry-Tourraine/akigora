@@ -47,7 +47,7 @@ class Plotting:
                         
                         #fig = go.Figure(data=[go.Bar(x=data[-2][data[-2].columns[0]], y=data[-1][data[-1].columns[0]], **plot_options)])
                         fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
-                        print(f"names {names}")
+                        print(f"names {name}")
                         fig.add_trace(go.Bar(
                         x=data[-2],
                         y=data[-1],
