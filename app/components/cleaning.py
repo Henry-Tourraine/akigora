@@ -12,7 +12,9 @@ class Cleaning:
         Create a new instance of the class with all constants and dataset useful for the cleaning process.
         '''
         # Dataframe with list of towns and related geographical info (to get regions, departments, etc.)
-        self.link_towns_regions = "https://www.data.gouv.fr/fr/datasets/r/dbe8a621-a9c4-4bc3-9cae-be1699c5ff25"  
+        # TODO 
+        # self.link_towns_regions = "https://www.data.gouv.fr/fr/datasets/r/dbe8a621-a9c4-4bc3-9cae-be1699c5ff25"  
+        self.link_towns_regions = "../../../csv/communes-departement-region.csv"
         self.df_nom_villes = pd.read_csv(self.link_towns_regions)[["libelle_acheminement", "nom_commune_complet", "nom_region"]]
         self.df_nom_villes["nom_commune_complet"] = self.df_nom_villes["nom_commune_complet"].str.strip(" 1234567890")
         # These constants are the default values used to fill the NaN in the dataset
@@ -25,8 +27,10 @@ class Cleaning:
         self.liste_nan_numeriques = ['hours_planned', 'daily_hourly.daily_prices', "daily_hourly_prices.daily_price_max", 'percentage', 'note_communication', 'note_quality', 'note_level']
         # Columns with str format
         self.liste_nan_str = ['companyOrSchool', 'company.address', 'experienceTime', 'studyLevel', 'company.type', 'done', 'visible', 'isFake', 'temporarilyInvisible', 'sector']    
-        # Columns containing addresses
+        # Columns containing addresses to convert to towns
         self.liste_villes = ['company.address']
+        # Columns containing addresses to convert to regions
+        self.liste_regions = ['company.address']
         # Columns containing time in hours
         self.liste_horaires = ['hours_planned']
         # Columns with timestamp format
@@ -38,6 +42,7 @@ class Cleaning:
         # List of dictionaries to link columns with their specific cleaning functions
         self.dico_cleans = [{"name": "liste_date", "columns": self.liste_date, "function": self.nettoyage_date},
                             {"name": "liste_villes", "columns": self.liste_villes, "function": self.nettoyage_villes},
+                            {"name": "liste_regions", "columns": self.liste_regions, "function": self.conversion_region},
                             {"name": "liste_horaires", "columns": self.liste_horaires, "function": self.nettoyage_horaires},
                             {"name": "liste_timestamp", "columns": self.liste_timestamp, "function": self.nettoyage_timestamp},
                             {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.fill_nan_num},
@@ -147,9 +152,9 @@ class Cleaning:
         if len(str(df.loc[~df[colonne].isna()][colonne][0])) >= 12: #is timestamp
             df[colonne] = pd.to_datetime(df[colonne], unit="ms")
             print()
-            return df  
-        
-        df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
+            return df
+
+        df[colonne] = df[colonne].apply(lambda chaine: '/'.join(str(int(x)) for x in chaine.split('/')) if '/' in chaine else chaine)
 
         def remove_n(df):
             if len(df[colonne]) < 3:
@@ -159,7 +164,7 @@ class Cleaning:
             df[colonne] = f"{temp[0][-2:]}/{temp[1][-2:]}/{temp[2][-4:]}"
             return df
         print("remove_n")
-        df.apply(remove_n, axis=1)
+        df = df.apply(remove_n, axis=1)
         df[colonne] = pd.to_datetime(df[colonne], format="%d/%m/%Y")
         return df     
 
@@ -202,7 +207,7 @@ class Cleaning:
     def is_a_dummy_value(self, val):
         '''
         INPUT: variable with any format
-        OUTPUT: boolean to check whether the variable is NaN / not a float or not
+        OUTPUT: boolean to check whether the variable is NaN / not a float... or not
         '''
         try:
             float(val)
@@ -234,15 +239,16 @@ class Cleaning:
         df[colonne] = df[colonne].astype('float')
 
         return df
-
-    def nettoyage_villes(self, df, colonne):
+    
+    def conversion_region(self, df, colonne):
         '''
-        INPUT: dataframe and column name; the given column contains adresses with various formats
-        OUTPUT: same dataframe; adresses values are replaced with only the name of town inside the address
+        INPUT: dataframe with column containing address with various formats
+        OUTPUT: french region where the given town in the address is located; If town is unknown, returns a default string (ex: unknown)
         '''
-        df[colonne].apply(self.get_town)
+        df = self.nettoyage_villes(df, colonne)
+        df[colonne] = df[colonne].apply(self.get_region)
         return df
-
+    
     def get_region(self, town):
         '''
         INPUT: town with first letter as capital and accents
@@ -253,6 +259,14 @@ class Cleaning:
             return list(self.df_nom_villes[self.df_nom_villes["nom_commune_complet"] == town]["nom_region"])[0]
         else:
             return self.defaut_string
+
+    def nettoyage_villes(self, df, colonne):
+        '''
+        INPUT: dataframe and column name; the given column contains adresses with various formats
+        OUTPUT: same dataframe; adresses values are replaced with only the name of town inside the address
+        '''
+        df[colonne] = df[colonne].apply(self.get_town)
+        return df
 
     def get_town(self, native_adress):
         '''
