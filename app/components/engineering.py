@@ -277,7 +277,7 @@ class Engineering:
 
             else:
                 result = Operations.operations[operation['fonction']](df, colonnes, result=result)
-                print(f"print 3: {result}")
+                print(f"operation: {operation['fonction']} result: {result}")
                 buffer.append(result)
                 print(f"print 4: {buffer}")
 
