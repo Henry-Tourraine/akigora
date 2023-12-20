@@ -45,7 +45,7 @@ class Cleaning:
                             {"name": "liste_regions", "columns": self.liste_regions, "function": self.conversion_region},
                             {"name": "liste_horaires", "columns": self.liste_horaires, "function": self.nettoyage_horaires},
                             {"name": "liste_timestamp", "columns": self.liste_timestamp, "function": self.nettoyage_timestamp},
-                            {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.fill_nan_num},
+                            # {"name": "liste_nan_numeriques", "columns": self.liste_nan_numeriques, "function": self.fill_nan_num},
                             {"name": "liste_nan_str", "columns": self.liste_nan_str, "function": self.fill_nan_str}
                             ]
 
@@ -78,44 +78,6 @@ class Cleaning:
         for match_ in matches:
             df = self.get_study_levels(df, match_)
 
-        """
-        # changement de format de date
-        for colonne in self.liste_date:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].apply(self.nettoyage_date)
-
-        # nettoyage ville
-        for colonne in self.liste_villes:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].apply(self.nettoyage_villes)
-
-        # nettoyage horaires
-        for colonne in self.liste_horaires:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].apply(self.nettoyage_horaires)
-
-        # nettoyage timestamp
-        for colonne in self.liste_timestamp:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].apply(self.nettoyage_timestamp)
-
-        # nettoyage catégorie d'age
-        if self.colonne_age_categories in df.columns:
-            self.get_age_categories(df, self.colonne_age_categories)
-
-        # nettoyage study levels
-        if self.colonne_study_categories in df.columns:
-            self.get_study_levels(df, self.colonne_study_categories)
-
-        # fillna numériques
-        for colonne in self.liste_nan_numeriques:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].fillna(self.defaut_negatif_float, inplace=True)
-
-        # fillna Inconnu
-        for colonne in self.liste_nan_st    r:
-            if colonne in df.columns:
-                df[colonne] = df[colonne].fillna(self.defaut_string, inplace=True)"""
         return df, None
 
     def fill_nan_num(self, df, colonne):
