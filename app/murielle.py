@@ -70,6 +70,52 @@ class MurielleController:
         results.append({"department": indicator_row["department"],"indicatorName": indicator_row["name"], "plot":  plot, "df_cleaned": df_cleaning, "ploting": ploting, "engineering": engineering})
     return results
 
+
+  def render_one_indicator(self, indicator_row):
+    print("---------------------------------------------------------------------------------------------->")
+    print(f'departement : {indicator_row["department"]}')
+    print(f'indicateur : {indicator_row["name"]}')
+    print("---------------------------------------------------------------------------------------------->")
+    print("data")
+    data = json.loads(indicator_row["data"])
+    #DATA PASS
+    (df, err) = self.data.process(data)
+    if err is not None:
+      return None, f"Failed at data : {err}"
+    print("df_data :")
+    print(df)
+    print("---------------------------------------------------------------------------------------------->")
+    print("cleaning")
+    #CLEANING PASS
+    if self.cleaning is not None:
+      #cleaning = json.loads(indicator_row["cleaning"])
+      (df, err) = self.cleaning.process(df)
+      if err is not None:
+        return None, f"Failed at cleaning : {err}"
+    print(type(df))
+    print(df)
+
+    print("---------------------------------------------------------------------------------------------->")
+    print("engineering")
+    #ENGINEERING PASS
+    #CHECK IF REFRESH IS NEEEDED
+    if self.engineering is not None:
+      engineering = json.loads(indicator_row["engineering"])
+      (df, df_cleaning, filters) = self.engineering.process(engineering, df)
+
+    if err is not None:
+      return None, f"Failed at engineering : {err}"
+
+    print("---------------------------------------------------------------------------------------------->")
+    print("plotting")
+    #PLOTING
+    if self.ploting is not None:
+      ploting = json.loads(indicator_row["plotting"])
+      (plot, err) = self.ploting.process(ploting, df)
+      if err is not None:
+        return None, f"Failed at ploting : {err}"
+      return {"department": indicator_row["department"],"indicatorName": indicator_row["name"], "plot":  plot, "df_cleaned": df_cleaning, "ploting": ploting, "engineering": engineering}
+  
   #in case engineering must be rerun
   def refresh(self, resfresh_dict):
     #refresh dict
