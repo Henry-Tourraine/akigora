@@ -3,7 +3,8 @@ import pandas as pd
 import unidecode as ud
 import numpy as np
 import re
-
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 class Cleaning:
 
