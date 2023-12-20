@@ -94,6 +94,7 @@ class Cleaning:
         OUTPUT: dataframe with column type as float64
         '''
         df[colonne] = df[colonne].str.strip()
+        df[colonne].replace(to_replace=",", value=".", inplace=True, regex=True)
         df[colonne][df[colonne] == ""] = "NaN"
         df[colonne] = df[colonne].astype("float64")
         return df
