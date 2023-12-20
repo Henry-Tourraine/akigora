@@ -95,7 +95,7 @@ class Cleaning:
         '''
         df[colonne] = df[colonne].astype(str).str.strip()
         df[colonne].replace(to_replace=",", value=".", inplace=True, regex=True)
-        df[colonne][df[colonne] == ""] = "NaN"
+        df[df[colonne] == "", colonne] = "NaN"
         df[colonne] = df[colonne].astype("float64")
         return df
 
