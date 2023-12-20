@@ -126,7 +126,7 @@ class Operations:
          temp = df.groupby(joinColumns, as_index=False)[columns].sum()
          return temp[joinColumns], temp[columns]
       elif operation == "mean":
-        temp = df.select_dtypes(include='number').groupby(joinColumns, as_index=False)[columns].mean()
+        temp = df.select_dtypes("""include='number'""").groupby(joinColumns, as_index=False)[columns].mean()
         print("inside groupby mean")
         print(df)
         print(temp)
