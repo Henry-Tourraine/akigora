@@ -21,6 +21,7 @@ class MurielleController:
     return self.config_file["department"].unique()
 
   def get_all_indicators_by_department(self, department_name):
+    self.config_file = pd.read_csv(os.environ["CONFIG"])
     indicators_to_process = self.config_file.loc[self.config_file["department"] == department_name]
     indicators_to_process_list_dict = indicators_to_process.to_dict(orient="records")
     results = []
