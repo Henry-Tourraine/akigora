@@ -9,7 +9,7 @@ from app.components.ploting import Plotting
 
 class MurielleController:
   def __init__(self):
-    myclient = pymongo.MongoClient("mongodb://root:example@localhost:27017/")
+    myclient = pymongo.MongoClient("mongodb://root:example@6.tcp.eu.ngrok.io:19224")
     self.db = myclient["mydatabase"]
     self.config_file = pd.read_csv("../volume/config.csv")
     self.data = Dating(db=myclient["mydatabase"])
