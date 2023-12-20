@@ -40,7 +40,7 @@ class Dating:
         temp = pd.merge(temp, join, left_on=[desc["leftKey"]], right_on=[desc["rightKey"]], how="left")
       else:
         return None, "No key"
-    return temp
+    return temp, None
 
 
   def process(self, data_descriptor):
