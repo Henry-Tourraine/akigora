@@ -124,7 +124,9 @@ class Operations:
          temp = df.groupby(joinColumns, as_index=False)[columns].sum()
          return temp[joinColumns], temp[columns]
       elif operation == "mean":
-        temp = df.groupby(joinColumns, as_index=False)[columns].mean()
+        temp = df.groupby(joinColumns, numeric_only=True, as_index=False)[columns].mean()
+        print("inside groupby mean")
+        print(temp)
         return temp[joinColumns], temp[columns]
       elif operation == "min":
         temp = df.groupby(joinColumns, as_index=False)[columns].min()
