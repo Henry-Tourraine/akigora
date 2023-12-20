@@ -97,10 +97,12 @@ class Operations:
        return None
 
     def swap(buffer, index1=None, index2=None):
+       print(buffer)
        if len(buffer) >= index1+1 and len(buffer) >= index2+1:
           temp = buffer[index1]
           buffer[index1] = buffer[index2]
           buffer[index2] = temp
+          print(buffer)
           return buffer
 
     def add(df, colonne, result=None, value=None):
