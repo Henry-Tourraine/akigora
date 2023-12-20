@@ -65,7 +65,7 @@ class Operations:
         return df[df[colonne].str.contains(str(valeur)).any()]
 
     def unique(df, colonne):
-        df = Operations.filtre(colonne)
+        df = Operations.filtre(df, colonne)
         return df.unique()
     
     def unique_multi(df, colonne):
