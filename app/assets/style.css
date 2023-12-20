@@ -106,8 +106,8 @@ body {
 
 .logo-homepage {
     width: 25rem;
-    margin-top: 3rem;
-    margin-bottom: 8rem;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
 }
 
 .img-homepage {
@@ -139,7 +139,7 @@ body {
     height: 35rem;
 }
 .div-ul {
-    overflow: scroll;
+    overflow-y: scroll;
     height:70vh;
 }
 ul {
@@ -274,7 +274,7 @@ margin: 1rem 0;
 }
 
 .indicator {
-    width: 21%;
+    width: 32%;
     height: 10rem;
 }
 
@@ -285,10 +285,14 @@ margin: 1rem 0;
 
 .pie {
     height: 40rem;
-    width: 80%
+    width: 100%
 }
 
-#toggle-aside-button{
+.pie-layout {
+    width: 96%;
+}
+
+.toggle-aside-button{
     position: fixed;
     bottom: 1rem;
     left: 1rem;

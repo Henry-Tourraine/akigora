@@ -45,18 +45,18 @@ def plot_indicator(plots):
             style={"width": "100%"},
             className="indicator-layout"
         )
-def plot_gauge(plots):
-    return html.Div(
-        children=[
-            dcc.Graph(
-                figure=plot['plot'],
-                id=f"graph-{plot['indicatorName']}",
-                style={"display": "block"},
-                className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
-            for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] == "gauge"
-        ],
-        className="gauge-layout"
-    )
+# def plot_gauge(plots):
+#     return html.Div(
+#         children=[
+#             dcc.Graph(
+#                 figure=plot['plot'],
+#                 id=f"graph-{plot['indicatorName']}",
+#                 style={"display": "block"},
+#                 className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
+#             for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] == "gauge"
+#         ],
+#         className="gauge-layout"
+#     )
 def plot_pie(plots):
     return html.Div(
         children=[
@@ -78,7 +78,7 @@ def plot_other(plots):
                 id=f"graph-{plot['indicatorName']}",
                 style={"display": "block"},
                 className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
-            for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] != "indicator" and plot["ploting"][load_indicateur(plot["ploting"])]['type_plot']  != "gauge"
+            for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] != "indicator" and plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] != "pie"
         ],
         className="graph-layout"
     )
@@ -110,7 +110,7 @@ layout = (
     ),
     html.Div(id='graphs-container', className='graph-layout', children=[
         plot_indicator(results),
-        plot_gauge(results),
+        plot_pie(results),
         plot_other(results)
     ]),
     html.Button(

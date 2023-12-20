@@ -23,7 +23,7 @@ layout = (html.Aside(
                                  id="ressources-humaines-link", className="tabs link"),
                         dcc.Link('Marketing', href='/marketing', id="marketing-link",
                                  className="tabs link"),
-                        dcc.Link('Commerce', href='/commercial', id="commercial-link",
+                        dcc.Link('Commerce', href='/commerce', id="commercial-link",
                                  className="tabs link"),
                 ])
             ])

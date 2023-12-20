@@ -2,19 +2,19 @@
 # from dash import html, dcc, callback, Input, Output
 # from murielle import MurielleController
 # from dash.exceptions import PreventUpdate
-#
-#
+
+
 # # Instance de MurielleController pour récupérer les données
 # controller = MurielleController()
 # departments = controller.get_departments()
 # results = controller.get_all_indicators_by_department("Commerce")
 # colors_palette = ['#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E','#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E']
-#
+
 # def load_indicateur(data):
 #     for i in data:
 #         return i
-#
-#
+
+
 # # Fonction pour créer une liste de boutons pour chaque indicateur
 # def list_indicator(indicators):
 #     return (html.Div(
@@ -25,8 +25,8 @@
 #             for indicator in indicators
 #         ]),)
 #     )
-#
-#
+
+
 # # Fonction pour créer un graphique pour chaque indicateur
 # def plot_indicator(plots):
 #         return html.Div(
@@ -35,7 +35,7 @@
 #                     figure=plot["plot"].update_layout(paper_bgcolor=colors_palette[i],
 #                                                       title_font_size=13,
 #                                                       hovermode='closest',
-#
+
 #                                                       ).update_traces(number_font_size=40),
 #                     id=f"graph-{plot['indicatorName']}",
 #                     style={"display": "block"},
@@ -69,7 +69,7 @@
 #         ],
 #         className="pie-layout"
 #     )
-#
+
 # def plot_other(plots):
 #     return html.Div(
 #         children=[
@@ -82,8 +82,8 @@
 #         ],
 #         className="graph-layout"
 #     )
-#
-#
+
+
 # # Layout principal de l'application
 # layout = (
 #     html.Aside(
@@ -115,17 +115,17 @@
 #     ]),
 #     html.Button(
 #         "<",
-#         id="toggle-aside-button",
+#         # id="toggle-aside-button",
 #         n_clicks=0,
 #         className="toggle-aside-button"
 #     ),
 # )
-#
+
 # # Créer les callbacks pour chaque indicateur
 # for result in results:
 #     indicator_name = result['indicatorName']
-#
-#
+
+
 #     @callback(
 #         Output(f'graph-{indicator_name}', 'style'),
 #         [Input(f'indicator-{indicator_name}', 'n_clicks')]
@@ -135,12 +135,12 @@
 #             return {'display': 'block'}
 #         else:
 #             return {'display': 'none'}
-#
-#
+
+
 # for result in results:
 #     indicator_name = result['indicatorName']
-#
-#
+
+
 #     @callback(
 #         Output(f'indicator-{indicator_name}', 'style'),
 #         [Input(f'indicator-{indicator_name}', 'n_clicks')]
@@ -151,8 +151,8 @@
 #         else:
 #             return {'color': 'rgba(0, 0, 0, .3)', "background-color": "transparent",
 #                     "border-radius": ".8rem"}
-#
-#
+
+
 # @callback(
 #     [Output('aside', 'style'),
 #      Output('toggle-aside-button', 'className')],

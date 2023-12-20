@@ -2,16 +2,16 @@ import pymongo
 import os
 import pandas as pd
 import json
-from app.components.dating import Dating
-from app.components.cleaning import Cleaning
-from app.components.engineering import Engineering
-from app.components.ploting import Plotting
+from components.dating import Dating
+from components.cleaning import Cleaning
+from components.engineering import Engineering
+from components.ploting import Plotting
 
 class MurielleController:
   def __init__(self):
-    myclient = pymongo.MongoClient("mongodb://root:example@6.tcp.eu.ngrok.io:19224")
+    myclient = pymongo.MongoClient("mongodb://root:example@2.tcp.eu.ngrok.io:18141")
     self.db = myclient["mydatabase"]
-    self.config_file = pd.read_csv("../volume/config.csv")
+    self.config_file = pd.read_csv("./volume/config.csv")
     self.data = Dating(db=myclient["mydatabase"])
     self.cleaning = Cleaning()
     self.engineering = Engineering
@@ -25,31 +25,17 @@ class MurielleController:
     indicators_to_process_list_dict = indicators_to_process.to_dict(orient="records")
     results = []
     for indicator_row in indicators_to_process_list_dict:
-      print("---------------------------------------------------------------------------------------------->")
-      print(f'departement : {indicator_row["department"]}')
-      print(f'indicateur : {indicator_row["name"]}')
-      print("---------------------------------------------------------------------------------------------->")
-      print("data")
       data = json.loads(indicator_row["data"])
       #DATA PASS
       (df, err) = self.data.process(data)
       if err is not None:
         return None, f"Failed at data : {err}"
-      print("df_data :")
-      print(df)
-      print("---------------------------------------------------------------------------------------------->")
-      print("cleaning")
       #CLEANING PASS
       if self.cleaning is not None:
         #cleaning = json.loads(indicator_row["cleaning"])
         (df, err) = self.cleaning.process(df)
         if err is not None:
           return None, f"Failed at cleaning : {err}"
-      print(type(df))
-      print(df)
-
-      print("---------------------------------------------------------------------------------------------->")
-      print("engineering")
       #ENGINEERING PASS
       #CHECK IF REFRESH IS NEEEDED
       if self.engineering is not None:
@@ -58,9 +44,6 @@ class MurielleController:
 
       if err is not None:
         return None, f"Failed at engineering : {err}"
-
-      print("---------------------------------------------------------------------------------------------->")
-      print("plotting")
       #PLOTING
       if self.ploting is not None:
         ploting = json.loads(indicator_row["plotting"])
@@ -72,31 +55,17 @@ class MurielleController:
 
 
   def render_one_indicator(self, indicator_row):
-    print("---------------------------------------------------------------------------------------------->")
-    print(f'departement : {indicator_row["department"]}')
-    print(f'indicateur : {indicator_row["name"]}')
-    print("---------------------------------------------------------------------------------------------->")
-    print("data")
     data = json.loads(indicator_row["data"])
     #DATA PASS
     (df, err) = self.data.process(data)
     if err is not None:
       return None, f"Failed at data : {err}"
-    print("df_data :")
-    print(df)
-    print("---------------------------------------------------------------------------------------------->")
-    print("cleaning")
     #CLEANING PASS
     if self.cleaning is not None:
       #cleaning = json.loads(indicator_row["cleaning"])
       (df, err) = self.cleaning.process(df)
       if err is not None:
         return None, f"Failed at cleaning : {err}"
-    print(type(df))
-    print(df)
-
-    print("---------------------------------------------------------------------------------------------->")
-    print("engineering")
     #ENGINEERING PASS
     #CHECK IF REFRESH IS NEEEDED
     if self.engineering is not None:
@@ -105,9 +74,6 @@ class MurielleController:
 
     if err is not None:
       return None, f"Failed at engineering : {err}"
-
-    print("---------------------------------------------------------------------------------------------->")
-    print("plotting")
     #PLOTING
     if self.ploting is not None:
       ploting = json.loads(indicator_row["plotting"])
