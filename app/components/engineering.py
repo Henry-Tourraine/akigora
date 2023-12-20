@@ -38,6 +38,9 @@ class Operations:
         df = Operations.filtre(df, colonne)
         length = len(df)
         return length
+    
+    def longueur_buffer(buffer):
+       return len(buffer[-1])
 
     def somme(df, colonne, result=None, value=None):
         df = Operations.filtre(df, colonne)
@@ -191,6 +194,10 @@ class Engineering:
             print(operation['fonction'])
             #work on buffer
             if len(colonnes) > 0 and colonnes[0]["name"] == "result":
+              if operation['fonction'] == "longueur":
+                result = Operations.longueur_buffer(buffer)
+                buffer.append(result)
+
               if operation['fonction'] == 'somme':
                   print(f' buffer lenght :{len(buffer)}')
                   result = Operations.somme_buffer(buffer=buffer, axis=operation.get("axis"))
