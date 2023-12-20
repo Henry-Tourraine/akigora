@@ -9,10 +9,10 @@ from app.components.ploting import Plotting
 
 class MurielleController:
   def __init__(self):
-    myclient = pymongo.MongoClient(os.environ["MONGODB"])
-    self.db = myclient[os.environ["DB"]]
-    self.config_file = pd.read_csv(os.environ["CONFIG"])
-    self.data = Dating(db=myclient[os.environ["DB"]])
+    myclient = pymongo.MongoClient("mongodb://root:example@localhost:27017/")
+    self.db = myclient["mydatabase"]
+    self.config_file = pd.read_csv("../volume/config.csv")
+    self.data = Dating(db=myclient["mydatabase"])
     self.cleaning = Cleaning()
     self.engineering = Engineering
     self.ploting = Plotting()

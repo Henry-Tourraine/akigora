@@ -7,7 +7,7 @@
 # # Instance de MurielleController pour récupérer les données
 # controller = MurielleController()
 # departments = controller.get_departments()
-# results = controller.get_all_indicators_by_department("Marketing")
+# results = controller.get_all_indicators_by_department("Commerce")
 # colors_palette = ['#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E','#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E']
 #
 # def load_indicateur(data):
@@ -102,7 +102,7 @@
 #             html.Div(
 #                 className="aside-container",
 #                 children=[
-#                     html.H1(children="Marketing", className="aside-title"),
+#                     html.H1(children="Commerce", className="aside-title"),
 #                     list_indicator(results),
 #                 ],
 #             )

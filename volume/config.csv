@@ -1,0 +1,519 @@
+department,name,data,engineering,plotting
+RH,Nombre d'experts inscrits sur la plateforme,"{
+  ""collection"": ""profile"",
+     ""data"": {
+                ""type"": ""expert"",
+                 ""createdAt"": null}
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": null}
+                   ]
+ }
+]","{
+    ""Nombre d'experts inscrits sur la plateforme"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [
+            {
+            ""name"":""slider""
+          }
+       ]
+    }
+}"
+RH,% d'experts à profil complété à 100%,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                                ""createdAt"": null,
+                                ""domains"": null,
+                                 ""type"": ""expert""
+                            }
+}","[
+ {
+    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""domains""], ""aggfunc"": ""count""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": null}
+                     ]
+ }
+]","{
+    ""% d'experts à profil complété à 100%"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [
+            {
+            ""name"":""slider"",
+           ""colonne"":""createdAt"",
+           ""span"":[0,12000],
+           ""range"":[0,12000],
+           ""type"": ""datetime""
+}
+            ]
+    }
+}"
+RH,% d'experts par domaine d'intervention ,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                                ""type"": ""expert"",
+                                ""sectors"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""sectors"", ""type"": null}
+                     ]
+ }
+]","{
+    ""% d'experts par domaine d'intervention "": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+Commerce,Nombre d'heure de missions,"{
+                        ""collection"": ""intervention"",
+                        ""data"": {
+                              ""hours_planned"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""hours_planned"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nombre d'heure de missions"": {
+        ""type_plot"": ""gauge"",
+        ""plot_options"": {},
+        ""filters"": [
+            {
+            ""name"":""slider"",
+           ""colonne"":""hours_planned"",
+           ""span"":[0,12000],
+           ""range"":[0,12000],
+           ""type"": ""int""
+          }
+            ]
+    }
+}"
+Custom,Nombre de femmes par ville,"{
+                        ""collection"": ""profile"",
+                        ""data"": {
+                              ""civility"": ""female"",
+                              ""company.address"": null
+                        }
+                }","[
+ {
+    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""company.address""], ""aggfunc"": ""count""},
+    ""colonnes"": [
+        {""name"": ""civility"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nombre de femmes par ville"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+RH,Nombre d'experts inscrits sur la plateforme,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",""createdAt"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nombre d'experts inscrits sur la plateforme"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,Nombre d'experts désinscrits,"{
+    ""collection"": ""user"",
+    ""data"": {
+        ""email"": ""removed@akigora.com""
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""email"", ""type"": ""removed@akigora.com""}
+                     ]
+ }
+]","{
+    ""Nombre d'experts désinscrits de la plateforme"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,"Nombre d'experts visibles sur la plateforme, Experts avec un taux de complétion de 100% et qui ont réalisé leur entretien","{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""done"": true,
+        ""visible"": true,
+        ""isFake"":false,
+        ""temporarilyInvisible"": false
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""},
+        {""name"": ""done"", ""type"": true},
+        {""name"": ""visible"", ""type"": true},
+        {""name"": ""isFake"", ""type"": false},
+        {""name"": ""temporarilyInvisible"", ""type"": false}
+                     ]
+ }
+]","{
+    ""Nombre d'experts visibles sur la plateforme"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,% d'experts à profil complété à 100% ,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""percentage"": null,
+        ""type"": null,
+         ""done"": null,
+        ""visible"": null,
+        ""isFake"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""},
+        {""name"": ""done"", ""type"": true},
+        {""name"": ""visible"", ""type"": true},
+        {""name"": ""isFake"", ""type"": false},
+        {""name"": ""percentage"", ""type"": 100}
+                     ]
+  },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""}
+             ]
+  },
+ {
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+             ]
+  },
+ {
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+             ]
+  }
+]","{
+    ""Pourcentage d'experts à profil complété à 100% "": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,% d'experts à profil non complété,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""percentage"": null,
+        ""type"": null,
+         ""done"": null,
+        ""visible"": null,
+        ""isFake"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""},
+        {""name"": ""done"", ""type"": true},
+        {""name"": ""visible"", ""type"": true},
+        {""name"": ""isFake"", ""type"": false},
+        {""name"": ""percentage"", ""type"": 100, ""comparateur"" : ""inf""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""}
+             ]
+  },
+ {
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+             ]
+  },
+ {
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+             ]
+  }
+]","{
+    ""Pourcentage d'experts à profil non complété "": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,"% d'experts par domaine d""intervention","{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""sectors"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""sectors""}
+                     ]
+ }
+]","{
+    ""Experts par domaine dintervention"": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": []
+    }
+}"
+RH,% d'experts par ville,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""location"": null,
+        ""geo"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""location""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""swap"", ""index1"": 0, ""index2"": 1},
+    ""colonnes"": [
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts par ville"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {""orientation"": ""h""},
+        ""filters"": [
+            ]
+    }
+}"
+RH,% d'experts par région,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""location"": null,
+        ""geo"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""location""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts par région"": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+RH,% d'entretiens passés,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""done"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""done"", ""type"": true}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""done""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'entretiens passés"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+RH,% d'experts sans référence,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""references"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""references"", ""type"": ""is_empty""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""references""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result"" }
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts sans référence"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
+RH,"% d'experts qui ont complété le champ ""Références""","{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""references"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""references"", ""type"": ""is_not_empty""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""references""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    "" Experts qui ont complété le champ Références"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,% d'experts évalués,"[
+        {
+            ""collection"": ""profile"",
+            ""data"": {
+                ""userId"": null,
+                ""type"": ""expert""
+            }
+        },
+        {
+            ""leftKey"": ""userId"",
+            ""rightKey"": ""expert_userId"",
+            ""collection"": ""intervention"",
+            ""data"": {
+                ""note_communication"": null,
+                ""note_quality"": null,
+                ""note_level"": null
+            }
+        }
+    ]","[
+ {
+    ""operation"": {""fonction"": ""unique""},
+    ""colonnes"": [
+        {""name"": ""expert_userId"", ""type"": ""is_not_empty""},
+        {""name"": ""note_communication"", ""type"": ""is_not_empty""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id_x""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts évalués"": {
+        ""type_plot"": ""gauge"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"

@@ -1,31 +1,25 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import html
+from dash import dcc
 import pandas as pd
 import plotly.graph_objs as go
 import flask
 from dash.dependencies import Input, Output
+from pages import homepage, rh, marketing, commerce, login
 
-from pages import homepage, direction, rh, marketing, commercial, technique, login
 
 server = flask.Flask(__name__)  # define flask app.server
 
-app = dash.Dash(__name__, server=server, title="Akigora Dashboard",)  # call flask server
+app = dash.Dash(__name__, server=server, title="Akigora Dashboard", suppress_callback_exceptions=True, update_title='Loading...')  # call flask server
 app._favicon = "img/muriel_favicon.ico"
 # run following in command
 # gunicorn graph:app.server -b :8000
 
 
-df = pd.read_csv(
-    'https://gist.githubusercontent.com/chriddyp/' +
-    '5d1ea79569ed194d432e56108a04d188/raw/' +
-    'a9f9e8076b837d541398e999dcbac2b2826a81f8/' +
-    'gdp-life-exp-2007.csv')
-
 app.layout = (
     html.Div(children=[
         dcc.Location(id='url', refresh=False),
-        html.Main(id='page-content', className=" layout")
+        html.Main(id='page-content', className="layout")
     ]))
 
 
@@ -40,18 +34,14 @@ def update_pathname(pathname):
 def display_page(pathname):
     if pathname == '/':
         return homepage.layout
-    elif pathname == '/direction':
-        return direction.layout
     elif pathname == '/ressources-humaines':
         return rh.layout
     elif pathname == '/marketing':
         return marketing.layout
-    elif pathname == '/commercial':
-        return commercial.layout
-    elif pathname == '/technique':
-        return technique.layout
+    elif pathname == '/commerce':
+        return commerce.layout
     elif pathname == '/login':
-       return login.generate_login(app)
+        return login.layout
     else:
         return '404 - Page not found'
 
