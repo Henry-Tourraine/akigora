@@ -12,7 +12,7 @@ class Plotting:
         try:
             if Plotting.check:
                 for indicateur, cle in graph_description.items():
-                    names = None
+                    name = None
                     data = result
                     type_plot = cle["type_plot"]
                     plot_options = cle["plot_options"]
@@ -21,7 +21,7 @@ class Plotting:
                             data[-1] = data[-1][data[-1].columns[0]]
 
                     if len(data) > 1 and type(data[-2]) == pd.core.frame.DataFrame:
-                        names = data[-2].columns[0]
+                        name = data[-2].columns[0]
                         data[-2] = data[-2][data[-2].columns[0]]
 
 
