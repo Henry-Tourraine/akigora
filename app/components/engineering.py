@@ -16,6 +16,9 @@ class Operations:
               df = df.loc[comparateur[colonne["comparateur"]](colonne["name"], colonne["type"])]
             elif colonne["type"] == "is_empty":
                df = df.loc[(df[colonne["name"]].isna()) | (df[colonne["name"]] == "")]
+               print("is empty")
+               print(len(df))
+               pritn(df)
             elif colonne["type"] == "is_not_empty":
                df = df.loc[(df[colonne["name"]].notna()) & (df[colonne["name"]] != "")]
             else: # no comaprateur
