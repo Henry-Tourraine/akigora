@@ -42,8 +42,15 @@ class Plotting:
                         print(data[-1])
                         print(type(data[-2]))
                         print(data[-2])
+                        
                         #fig = go.Figure(data=[go.Bar(x=data[-2][data[-2].columns[0]], y=data[-1][data[-1].columns[0]], **plot_options)])
                         fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
+                        fig.add_trace(go.Bar(
+                        x=data[-2],
+                        y=data[-1],
+                        name=data[-1].name,
+                        marker_color='indianred'
+))
                     else:
                         print(f"Type de plot non supporté: {type_plot}")
 

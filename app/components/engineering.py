@@ -75,7 +75,7 @@ class Operations:
         return df[[i["name"] for i in colonne]].unique()
 
     def value_counts(df, colonne, result=None):
-        print(f"value count {colonne[0]['name']}")
+        print(f"value count {colonne[0]['name']} {df[colonne[0]['name']].value_counts().index}")
         return df[colonne[0]["name"]].value_counts()
 
     def div(df, colonne, result=None, value=None):
