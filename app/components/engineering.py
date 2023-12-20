@@ -130,7 +130,7 @@ class Operations:
         print(f"groupby mean {columns}")
         temp = df.groupby(joinColumns, as_index=False)[columns].mean()
         print("inside groupby mean")
-        print(df)
+        print("temp")
         print(temp)
         return temp[joinColumns], temp[columns]
       elif operation == "min":
