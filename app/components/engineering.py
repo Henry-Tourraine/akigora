@@ -37,6 +37,15 @@ class Operations:
     def somme(df, colonne, result=None, value=None):
         df = Operations.filtre(df, colonne)
         return sum(df)
+    
+    def somme_buffer(buffer, axis=0):
+        if axis == 0 and len(buffer) > 1:
+           return buffer[-2] + buffer[-1]
+        else:
+           if type(buffer[-1]) == pd.core.frame.DataFrame:
+              return sum(buffer[-1][buffer[-1].columns[0]])
+           return sum(buffer[-1])
+       
 
     def moyenne(df, colonne, result=None, value=None):
         df = Operations.filtre(df, colonne)
@@ -175,6 +184,12 @@ class Engineering:
             print(operation['fonction'])
             #work on buffer
             if len(colonnes) > 0 and colonnes[0]["name"] == "result":
+              if operation['fonction'] == 'somme':
+                  print(f' buffer lenght :{len(buffer)}')
+                  result = Operations.somme_buffer(buffer=buffer, axis=operation.get("axis"))
+                  print(f"print 1: {result}")
+                  buffer.append(result)
+                  print(f"print 2: {buffer}")
               # handling for div_buffer
               if operation['fonction'] == 'div':
                   print(f' buffer lenght :{len(buffer)}')
