@@ -11,14 +11,16 @@ class Operations:
         return df
       else:
         for colonne in colonnes:
+          print(f"filtre -> colone {colonne}")
           if "type" in colonne  and colonne["type"] is not None and colonne["name"] != "result":
             if "comparateur" in colonne:
               df = df.loc[comparateur[colonne["comparateur"]](colonne["name"], colonne["type"])]
+
             elif colonne["type"] == "is_empty":
                df = df.loc[(df[colonne["name"]].isna()) | (df[colonne["name"]] == "")]
                print("is empty")
                print(len(df))
-               pritn(df)
+               print(df)
             elif colonne["type"] == "is_not_empty":
                df = df.loc[(df[colonne["name"]].notna()) & (df[colonne["name"]] != "")]
             else: # no comaprateur
