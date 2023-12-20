@@ -21,7 +21,7 @@ class Plotting:
                             data[-1] = data[-1][data[-1].columns[0]]
 
                     if len(data) > 1 and type(data[-2]) == pd.core.frame.DataFrame:
-                        names = data[-2][data[-2].columns[0]].unique()
+                        names = data[-2].columns[0]
                         data[-2] = data[-2][data[-2].columns[0]]
 
 
@@ -47,10 +47,11 @@ class Plotting:
                         
                         #fig = go.Figure(data=[go.Bar(x=data[-2][data[-2].columns[0]], y=data[-1][data[-1].columns[0]], **plot_options)])
                         fig = go.Figure(data=[go.Bar(x=data[-2], y=data[-1], **plot_options)])
+                        print(f"names {names}")
                         fig.add_trace(go.Bar(
                         x=data[-2],
                         y=data[-1],
-                        name=names,
+                        name=name,
                         marker_color='indianred'
 ))
                     else:
