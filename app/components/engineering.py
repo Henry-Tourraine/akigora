@@ -249,7 +249,12 @@ class Engineering:
                 print(f"print 1: {result}")
                 buffer.append(result)
                 print(f"print 2: {buffer}")
-            # handling for group_by
+                
+            # handling for unique
+            elif operation['fonction'] == 'unique':
+                result = Operations.unqiue(df, colonnes)
+                buffer.append(result)
+                print("unique")
                 
             # penser a implementer la logique de contient
             elif operation['fonction'] == 'value_counts':
