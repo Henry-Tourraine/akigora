@@ -44,7 +44,7 @@ class Operations:
 
     def somme(df, colonne, result=None, value=None):
         df = Operations.filtre(df, colonne)
-        print(f"somme df before{df} type : {df[df.columns[0]].dtype }")
+        print(f"somme df before{df.columns} type : {df[df.columns[0]].dtype }")
         return sum(df)
     
     def somme_buffer(buffer, axis=0):
