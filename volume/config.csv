@@ -1,106 +1,25 @@
 department,name,data,engineering,plotting
 RH,Nombre d'experts inscrits sur la plateforme,"{
-  ""collection"": ""profile"",
-     ""data"": {
-                ""type"": ""expert"",
-                 ""createdAt"": null}
+    ""collection"": ""profile"", 
+    ""data"": {
+        ""type"": ""expert"",""createdAt"": null
+    }
 }","[
  {
     ""operation"": {""fonction"": ""longueur""},
     ""colonnes"": [
         {""name"": ""type"", ""type"": null}
-                   ]
+                     ]
  }
 ]","{
     ""Nombre d'experts inscrits sur la plateforme"": {
         ""type_plot"": ""indicator"",
         ""plot_options"": {},
-        ""filters"": [
-            {
-            ""name"":""slider""
-          }
-       ]
-    }
-}"
-RH,% d'experts à profil complété à 100%,"{
-                        ""collection"": ""profile"",
-                        ""data"": {
-                                ""createdAt"": null,
-                                ""domains"": null,
-                                 ""type"": ""expert""
-                            }
-}","[
- {
-    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""domains""], ""aggfunc"": ""count""},
-    ""colonnes"": [
-        {""name"": ""type"", ""type"": null}
-                     ]
- }
-]","{
-    ""% d'experts à profil complété à 100%"": {
-        ""type_plot"": ""bar"",
-        ""plot_options"": {},
-        ""filters"": [
-            {
-            ""name"":""slider"",
-           ""colonne"":""createdAt"",
-           ""span"":[0,12000],
-           ""range"":[0,12000],
-           ""type"": ""datetime""
-}
-            ]
-    }
-}"
-Commerce,Nombre d'heure de missions,"{
-                        ""collection"": ""intervention"",
-                        ""data"": {
-                              ""hours_planned"": null
-                        }
-                }","[
- {
-    ""operation"": {""fonction"": ""longueur""},
-    ""colonnes"": [
-        {""name"": ""hours_planned"", ""type"": null}
-                     ]
- }
-]","{
-    ""Nombre d'heure de missions"": {
-        ""type_plot"": ""gauge"",
-        ""plot_options"": {},
-        ""filters"": [
-            {
-            ""name"":""slider"",
-           ""colonne"":""hours_planned"",
-           ""span"":[0,12000],
-           ""range"":[0,12000],
-           ""type"": ""int""
-          }
-            ]
-    }
-}"
-Custom,Nombre de femmes par ville,"{
-                        ""collection"": ""profile"",
-                        ""data"": {
-                              ""civility"": ""female"",
-                              ""company.address"": null
-                        }
-                }","[
- {
-    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""company.address""], ""aggfunc"": ""count""},
-    ""colonnes"": [
-        {""name"": ""civility"", ""type"": null}
-                     ]
- }
-]","{
-    ""Nombre de femmes par ville"": {
-        ""type_plot"": ""bar"",
-        ""plot_options"": {},
-        ""filters"": [
-            ]
+        ""filters"": [ ]
     }
 }"
 RH,Nombre d'experts désinscrits,"{
-    ""collection"": ""user"",
+    ""collection"": ""user"", 
     ""data"": {
         ""email"": ""removed@akigora.com""
     }
@@ -282,6 +201,28 @@ RH,% d'experts par ville,"{
             ]
     }
 }"
+RH,% d'experts par région,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""location"": null,
+        ""geo"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""location""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts par région"": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": [
+            ]
+    }
+}"
 RH,% d'entretiens passés,"{
     ""collection"": ""profile"",
     ""data"": {
@@ -451,6 +392,290 @@ RH,% d'experts évalués,"[
 ]","{
     ""Pourcentage d'experts évalués"": {
         ""type_plot"": ""gauge"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,Note d'évaluation par expert,"[
+        {
+            ""collection"": ""profile"",
+            ""data"": {
+                ""userId"": null,
+                ""type"": ""expert""
+            }
+        },
+        {
+            ""leftKey"": ""userId"",
+            ""rightKey"": ""expert_userId"",
+            ""collection"": ""intervention"",
+            ""data"": {
+                ""note_communication"": null,
+                ""note_quality"": null,
+                ""note_level"": null
+            }
+        }
+    ]","[
+ {
+    ""operation"": {""fonction"": ""group_by"", ""groupColumns"": [""_id_x""], ""aggfunc"": ""mean""},
+    ""colonnes"": [
+         {""name"": ""note_communication"", ""type"": ""is_not_empty""}
+                     ]
+ }
+]","{
+    ""Note d'évaluation par expert"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": []
+    }
+}"
+RH,% d'experts recommandés,"[
+        {
+            ""collection"": ""profile"",
+            ""data"": {
+                ""type"": ""expert""
+            }
+        },
+        {
+            ""collection"": ""recommandation"",
+            ""leftKey"": ""_id"",
+            ""rightKey"": ""expertId"",
+            ""data"": {}
+        }
+    ]","[
+ {
+    ""operation"": {""fonction"": ""unique""},
+    ""colonnes"": [
+        {""name"": ""_id_y""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id_x""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    ""Pourcentage d'experts recommandés"": {
+        ""type_plot"": ""gauge"",
+        ""plot_options"": { },
+        ""filters"": [ ]
+    }
+}"
+RH,Nombre de recommandations,"{
+    ""collection"": ""recommandation""
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nb de recommandations"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+RH,% d'experts qui ont utilisé linkedin pour renseigner leur profil,"{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""linkedInImport"": true,
+        ""type"": ""expert""
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""linkedInImport""},
+         {""name"": ""type""}
+                     ]
+ }
+]","{
+    ""Experts qui ont utilisé linkedin pour renseigner leur profil"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,Nb de recherches,"{
+    ""collection"": ""search""
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""keywords"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nb de recherches"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,Nombre de consultations de profils,"{
+    ""collection"": ""consultations""
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nb de consultations de profils"": {
+        ""type_plot"": ""indicator"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,% d'abonnés newsletter,"{
+    ""collection"": ""newsletter""
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""type"", ""type"": ""expert""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id"", ""type"": null}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""div""},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ },
+{
+    ""operation"": {""fonction"": ""mul"", ""value"": 100},
+    ""colonnes"": [
+        {""name"": ""result""}
+                     ]
+ }
+]","{
+    ""% d'abonnés newsletter "": {
+        ""type_plot"": ""gauge"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,Répartition des experts / statut juridique en %,"{
+    ""collection"": ""user"",
+    ""data"": {
+        ""company.type"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""company.type""}
+                     ]
+ }
+]","{
+    ""Répartition des experts / statut juridique "": {
+        ""type_plot"": ""pie"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,"Répartition des experts / nb d""années d""expérience en %","{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""experienceTime"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""experienceTime"", ""type"": null},
+        {""name"": ""type"", ""type"": ""expert""}
+                     ]
+ }
+]","{
+    ""Répartition des experts / nb année d'experience "": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {},
+        ""filters"": [ ]
+    }
+}"
+Marketing,"Répartition des experts / ""type"" de diplôme le plus haut obtenu en %","{
+    ""collection"": ""profile"",
+    ""data"": {
+        ""type"": ""expert"",
+        ""studyTitle"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""studyTitle"", ""type"": null},
+        {""name"": ""type"", ""type"": ""expert""}
+                     ]
+ }
+]","{
+    ""Répartition des experts / type de diplôme"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {""name"": ""type de diplôme""},
+        ""filters"": [ ]
+    }
+}"
+Marketing,"Répartition des entreprises / ""type"" de structure en % Structure : Ecole / Start-up / PME / TPE / Grand groupe","{
+    ""collection"": ""user"",
+    ""data"": {
+        ""companyOrSchool"": null,
+        ""company.type"": null
+    }
+}","[
+ {
+    ""operation"": {""fonction"": ""value_counts""},
+    ""colonnes"": [
+        {""name"": ""companyOrSchool"", ""type"": ""company""},
+        {""name"": ""company.type"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Répartition des entreprises / type de structure"": {
+        ""type_plot"": ""bar"",
+        ""plot_options"": {""name"": ""type de structures""},
+        ""filters"": [ ]
+    }
+}"
+Commerce,Nombre de missions,"{
+    ""collection"": ""intervention""
+}","[
+ {
+    ""operation"": {""fonction"": ""longueur""},
+    ""colonnes"": [
+        {""name"": ""_id"", ""type"": null}
+                     ]
+ }
+]","{
+    ""Nb de missions"": {
+        ""type_plot"": ""indicator"",
         ""plot_options"": {},
         ""filters"": [ ]
     }
