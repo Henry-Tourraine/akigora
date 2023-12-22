@@ -1,71 +1,93 @@
-import dash_html_components as html
-import pandas as pd
-import plotly.graph_objs as go
-from dash import dcc
-
-sheet_url = 'https://docs.google.com/spreadsheets/d/1Fx_SjWbTV0J2jvtXrWdkQsLS5-9AazAt7nrywB2sy4w/edit#gid=1743150118'
-csv_export_url = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
-dfProfile = pd.read_csv(csv_export_url)
-experts = dfProfile[dfProfile['type'] == 'expert']
-expertsWithoutRef = experts[experts['references'].apply(lambda x: pd.isnull(x) or (x == '[]'))]
-
-sheet_indicator_url = "https://docs.google.com/spreadsheets/d/1Fx_SjWbTV0J2jvtXrWdkQsLS5-9AazAt7nrywB2sy4w/edit#gid=0"
-csv_export = sheet_indicator_url.replace('/edit#gid=', '/export?format=csv&gid=')
-sheet_indicator = pd.read_csv(csv_export)
-indicators = sheet_indicator["Indicateurs"]
-
-labels = ['Expert sans référence', 'Autre']
-values = [len(expertsWithoutRef), (len(experts) - len(expertsWithoutRef))]
-
-fig4 = go.Figure(go.Indicator(
-    mode="number",
-    title={"text": "Nombre d'experts"},
-    value=len(experts)),
-)
-fig1 = go.Figure(go.Pie(labels=labels,
-                        values=values))
-fig1.update_layout(title="Pourcentage d'entretiens passés")
-
-hourly_price_min_values = dfProfile['daily_hourly_prices.hourly_price_min'].dropna()
-hourly_price_max_values = dfProfile['daily_hourly_prices.hourly_price_max'].dropna()
-df_expert = dfProfile[dfProfile['type'] == 'expert']
-taux_journalier_max = round(df_expert['daily_hourly_prices.daily_price_max'].mean())
-taux_journalier_min = round(df_expert['daily_hourly_prices.hourly_price_min'].mean())
-taux_horaire_moyen = round(((hourly_price_min_values + hourly_price_max_values) / 2).mean())
-
-fig2 = go.Figure(go.Indicator(
-    mode="number",
-    value=taux_journalier_max,
-    title="Taux journalier maximum (en €)",
-    number={'valueformat': ',',
-            }))
-
-hourly_price_min_values = dfProfile['daily_hourly_prices.hourly_price_min'].dropna()
-hourly_price_max_values = dfProfile['daily_hourly_prices.hourly_price_max'].dropna()
-
-taux_journalier_max = round(df_expert['daily_hourly_prices.hourly_price_max'].mean())
-taux_journalier_min = round(df_expert['daily_hourly_prices.hourly_price_min'].mean())
-taux_horaire_moyen = round(((hourly_price_min_values + hourly_price_max_values) / 2).mean())
-
-fig3 = go.Figure()
-
-fig3.add_trace(go.Indicator(
-    mode="gauge+number+delta",
-    value=taux_horaire_moyen,
-    title={'text': "Taux Horaire Moyen",
-           'font': {'size': 20}},
-    gauge={'axis': {'range': [taux_journalier_min, taux_journalier_max]},
-           'bar': {'color': "gold"},  # Set the color to gold
-           }))
+import dash
+from dash import html, dcc, callback, Input, Output
+from murielle import MurielleController
+from dash.exceptions import PreventUpdate
 
 
+# Instance de MurielleController pour récupérer les données
+controller = MurielleController()
+departments = controller.get_departments()
+results = controller.get_all_indicators_by_department("RH")
+colors_palette = ['#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E','#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E']
+
+def load_indicateur(data):
+    for i in data:
+        return i
+
+
+# Fonction pour créer une liste de boutons pour chaque indicateur
 def list_indicator(indicators):
-    items_liste = [html.Li(indicator) for indicator in indicators]
-    return html.Ul(items_liste)
+    return (html.Div(
+        className="div-ul",
+        children=
+        html.Ul([
+            html.Li(indicator['indicatorName'], id=f"indicator-{indicator['indicatorName']}", n_clicks=0)
+            for indicator in indicators
+        ]),)
+    )
 
 
+# Fonction pour créer un graphique pour chaque indicateur
+def plot_indicator(plots):
+        return html.Div(
+            children=[
+                dcc.Graph(
+                    figure=plot["plot"].update_layout(paper_bgcolor=colors_palette[i],
+                                                      title_font_size=13,
+                                                      hovermode='closest',
+
+                                                      ).update_traces(number_font_size=40),
+                    id=f"graph-{plot['indicatorName']}",
+                    style={"display": "block"},
+                    className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
+                for i, plot in enumerate(plots) if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] == "indicator"
+            ],
+            style={"width": "100%"},
+            className="indicator-layout"
+        )
+# def plot_gauge(plots):
+#     return html.Div(
+#         children=[
+#             dcc.Graph(
+#                 figure=plot['plot'],
+#                 id=f"graph-{plot['indicatorName']}",
+#                 style={"display": "block"},
+#                 className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
+#             for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] == "gauge"
+#         ],
+#         className="gauge-layout"
+#     )
+def plot_pie(plots):
+    return html.Div(
+        children=[
+            dcc.Graph(
+                figure=plot['plot'],
+                id=f"graph-{plot['indicatorName']}",
+                style={"display": "block"},
+                className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
+            for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] == "pie"
+        ],
+        className="pie-layout"
+    )
+
+def plot_other(plots):
+    return html.Div(
+        children=[
+            dcc.Graph(
+                figure=plot['plot'],
+                id=f"graph-{plot['indicatorName']}",
+                style={"display": "block"},
+                className=plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'])
+            for plot in plots if plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] != "indicator" and plot["ploting"][load_indicateur(plot["ploting"])]['type_plot'] != "pie"
+        ],
+        className="graph-layout"
+    )
+
+
+# Layout principal de l'application
 layout = (
     html.Aside(
+        id="aside",
         className="aside",
         children=[
             dcc.Link(
@@ -81,15 +103,65 @@ layout = (
                 className="aside-container",
                 children=[
                     html.H1(children="Ressources Humaines", className="aside-title"),
-                    html.Div(children=[
-                        list_indicator(indicators)
-                    ])
-                ])
+                    list_indicator(results),
+                ],
+            )
         ]
     ),
-    html.Div(className='graph-layout', children=[
-        dcc.Graph(figure=fig2, className="pie-chart"),
-        dcc.Graph(figure=fig1, className="pie-chart"),
-        dcc.Graph(figure=fig3, className="pie-chart"),
-        dcc.Graph(figure=fig4, className="pie-chart")
-    ]))
+    html.Div(id='graphs-container', className='graph-layout', children=[
+        plot_indicator(results),
+        plot_pie(results),
+        plot_other(results)
+    ]),
+    html.Button(
+        "<",
+        id="toggle-aside-button",
+        n_clicks=0,
+        className="toggle-aside-button"
+    ),
+)
+
+# Créer les callbacks pour chaque indicateur
+for result in results:
+    indicator_name = result['indicatorName']
+
+
+    @callback(
+        Output(f'graph-{indicator_name}', 'style'),
+        [Input(f'indicator-{indicator_name}', 'n_clicks')]
+    )
+    def update_style(click, indicator_name=indicator_name):
+        if click is None or click % 2 == 0:
+            return {'display': 'block'}
+        else:
+            return {'display': 'none'}
+
+
+for result in results:
+    indicator_name = result['indicatorName']
+
+
+    @callback(
+        Output(f'indicator-{indicator_name}', 'style'),
+        [Input(f'indicator-{indicator_name}', 'n_clicks')]
+    )
+    def update_style(click, indicator_name=indicator_name):
+        if click is None or click % 2 == 0:
+            return {'color': 'black'}
+        else:
+            return {'color': 'rgba(0, 0, 0, .3)', "background-color": "transparent",
+                    "border-radius": ".8rem"}
+
+
+@callback(
+    [Output('aside', 'style'),
+     Output('toggle-aside-button', 'className')],
+    [Input('toggle-aside-button', 'n_clicks')],
+)
+def toggle_aside(n_clicks):
+    if n_clicks is None or n_clicks % 2 == 0:
+        # Si le nombre de clics est pair ou None, affiche l'Aside et retire la classe de rotation
+        return {'display': 'block'}, 'toggle-aside-button'
+    else:
+        # Si le nombre de clics est impair, fait disparaître l'Aside et ajoute la classe de rotation
+        return {'display': 'none'}, 'toggle-aside-button rotate180'

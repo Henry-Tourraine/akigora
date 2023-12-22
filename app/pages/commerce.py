@@ -7,7 +7,7 @@ from dash.exceptions import PreventUpdate
 # Instance de MurielleController pour récupérer les données
 controller = MurielleController()
 departments = controller.get_departments()
-results = controller.get_all_indicators_by_department("Marketing")
+results = controller.get_all_indicators_by_department("Commerce")
 colors_palette = ['#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E','#E1D8F7', '#E4FDE1', '#D7C8F3', '#DAF2D7', '#D0BEF2', '#C6EDC3', '#C0A7EB', '#A7DCA5', '#B596E5', '#90CF8E']
 
 def load_indicateur(data):
@@ -102,7 +102,7 @@ layout = (
             html.Div(
                 className="aside-container",
                 children=[
-                    html.H1(children="Marketing", className="aside-title"),
+                    html.H1(children="Commerce", className="aside-title"),
                     list_indicator(results),
                 ],
             )
@@ -115,9 +115,9 @@ layout = (
     ]),
     html.Button(
         "<",
-        id="toggle-aside-button",
+        id="toggle-aside-button-commerce",
         n_clicks=0,
-        className="toggle-aside-button"
+        className="toggle-aside-button-commerce"
     ),
 )
 
@@ -155,14 +155,14 @@ for result in results:
 
 @callback(
     [Output('aside', 'style', allow_duplicate=True),
-     Output('toggle-aside-button', 'className', allow_duplicate=True)],
-    [Input('toggle-aside-button', 'n_clicks')],
+     Output('toggle-aside-button-commerce', 'className', allow_duplicate=True)],
+    [Input('toggle-aside-button-commerce', 'n_clicks')],
     prevent_initial_call=True
 )
 def toggle_aside(n_clicks):
     if n_clicks is None or n_clicks % 2 == 0:
         # Si le nombre de clics est pair ou None, affiche l'Aside et retire la classe de rotation
-        return {'display': 'block'}, 'toggle-aside-button'
+        return {'display': 'block'}, 'toggle-aside-button-commerce'
     else:
         # Si le nombre de clics est impair, fait disparaître l'Aside et ajoute la classe de rotation
-        return {'display': 'none'}, 'toggle-aside-button rotate180'
+        return {'display': 'none'}, 'toggle-aside-button-commerce rotate180'
